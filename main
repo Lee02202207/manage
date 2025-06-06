@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메이플M 명단 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f8ff; font-family: 'Arial', sans-serif; }
+        .header { background-color: #4682b4; color: white; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
+        .boss-card { cursor: pointer; margin-bottom: 15px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .boss-card:hover { transform: scale(1.03); }
+        .boss-header { background-color: #5f9ea0; color: white; padding: 15px; font-weight: bold; }
+        .party-container { display: none; padding: 20px; background-color: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .party-item { background-color: white; border-radius: 8px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .party-members { display: none; margin-top: 10px; padding: 10px; background-color: #f9f9f9; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="header text-center">
+            <h1>메이플M 명단 관리</h1>
+        </div>
+        <div class="row" id="bossList"></div>
+    </div>
+
+    <div class="container party-container" id="partyDetail">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 id="partyTitle"></h2>
+            <button class="btn btn-primary" onclick="backToList()">목록으로</button>
+        </div>
+        <button class="btn btn-success mb-3" id="addPartyBtn">새 파티 추가</button>
+        <div id="partyListContainer"></div>
+    </div>
+
+   <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메이플M 명단 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Arial', sans-serif;
+        }
+        .header {
+            background-color: #4682b4;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .boss-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .boss-card:hover {
+            transform: scale(1.03);
+        }
+        .boss-header {
+            background-color: #5f9ea0;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .party-container {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .party-table th {
+            background-color: #4682b4;
+            color: white;
+        }
+        .edit-btn {
+            cursor: pointer;
+            color: #4682b4;
+        }
+        .party-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .party-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .party-members {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .time-input {
+            width: 80px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="header text-center">
+            <h1>메이플M 명단 관리</h1>
+        </div>
+
+        <div class="row" id="bossList">
+            <!-- 보스 목록이 동적으로 생성됩니다 -->
+        </div>
+    </div>
+
+    <!-- 보스 파티 상세 정보 컨테이너 -->
+    <div class="container party-container" id="partyDetail">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 id="partyTitle"></h2>
+            <button class="btn btn-primary" onclick="backToList()">목록으로</button>
+        </div>
+        
+        <button class="btn btn-success mb-3" id="addPartyBtn">새 파티 추가</button>
+        
+        <div id="partyListContainer">
+            <!-- 파티 목록이 동적으로 생성됩니다 -->
+        </div>
+    </div>
+
+    <!-- 파티 추가 모달 -->
+    <div class="modal fade" id="addPartyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">새 파티 추가</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">요일</label>
+                        <select class="form-select" id="newDayOfWeek">
+                            <option value="월">월요일</option>
+                            <option value="화">화요일</option>
+                            <option value="수">수요일</option>
+                            <option value="목">목요일</option>
+                            <option value="금">금요일</option>
+                            <option value="토">토요일</option>
+                            <option value="일">일요일</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">시간 (24시간제)</label>
+                        <div>
+                            <input type="number" class="form-control time-input" id="newHour" min="0" max="23" value="20"> 시
+                            <input type="number" class="form-control time-input ms-2" id="newMinute" min="0" max="59" value="00"> 분
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">파티명</label>
+                        <input type="text" class="form-control" id="newPartyName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">설명</label>
+                        <input type="text" class="form-control" id="newPartyDesc">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewParty()">추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 파티원 관리 모달 -->
+    <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="memberModalTitle">파티원 관리</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered party-table">
+                            <thead>
+                                <tr>
+                                    <th width="25%">직업</th>
+                                    <th width="25%">이름</th>
+                                    <th width="40%">비고</th>
+                                    <th width="10%">액션</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberList">
+                                <!-- 파티원 목록이 동적으로 생성됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addNewMember()">+ 파티원 추가</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMembers()">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase & Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        // Firebase 구성 (사용자가 제공한 정보로 업데이트)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJU50BQl3igwD9wuWWoaaO0GwzDvQUv5g",
+            authDomain: "lee0-25f09.firebaseapp.com",
+            databaseURL: "https://lee0-25f09-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "lee0-25f09",
+            storageBucket: "lee0-25f09.firebasestorage.app",
+            messagingSenderId: "766089542573",
+            appId: "1:766089542573:web:98875fe7dd4e64669aff24",
+            measurementId: "G-1VT79LD643"
+        };
+
+        // Firebase 초기화
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+        const addPartyModal = new bootstrap.Modal(document.getElementById('addPartyModal'));
+        const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
+
+        // 보스 목록
+        const bossList = [
+            { id: "guard3hard4", name: "군3하4" },
+            { id: "starderkar", name: "스데더카" },
+            { id: "hardwill", name: "하드윌" },
+            { id: "jinhylla", name: "진힐라" },
+            { id: "kalush", name: "카루시" },
+            { id: "kawill", name: "카윌" },
+            { id: "dunkel", name: "듄켈" },
+            { id: "geomma", name: "검마" }
+        ];
+
+        let currentBossId = null;
+        let currentPartyId = null;
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBossList();
+            document.getElementById('addPartyBtn').addEventListener('click', function() {
+                addPartyModal.show();
+            });
+        });
+
+        // 보스 목록 렌더링
+        function renderBossList() {
+            const bossListElement = document.getElementById('bossList');
+            bossListElement.innerHTML = '';
+
+            bossList.forEach(boss => {
+                const bossCard = document.createElement('div');
+                bossCard.className = 'col-md-6';
+                bossCard.innerHTML = `
+                    <div class="boss-card" onclick="showPartyDetail('${boss.id}')">
+                        <div class="boss-header">
+                            ${boss.name}
+                        </div>
+                    </div>
+                `;
+                bossListElement.appendChild(bossCard);
+            });
+        }
+
+        // 파티 상세 정보 보기
+        function showPartyDetail(bossId) {
+            currentBossId = bossId;
+            document.getElementById('bossList').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'block';
+            document.getElementById('partyTitle').textContent = bossList.find(b => b.id === bossId).name;
+
+            // Firebase에서 파티 데이터 불러오기
+            loadPartyList(bossId);
+        }
+
+        // 파티 목록 불러오기
+        function loadPartyList(bossId) {
+            const partyListRef = database.ref('parties/' + bossId);
+            
+            partyListRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                const partyListContainer = document.getElementById('partyListContainer');
+                partyListContainer.innerHTML = '';
+                
+                if (data) {
+                    Object.keys(data).forEach(partyId => {
+                        const party = data[partyId];
+                        addPartyItem(partyListContainer, partyId, party);
+                    });
+                }
+                
+                if (!data || Object.keys(data).length === 0) {
+                    partyListContainer.innerHTML = '<p>등록된 파티가 없습니다. 새 파티를 추가해주세요.</p>';
+                }
+            }, (error) => {
+                console.error("데이터 불러오기 실패:", error);
+                alert('파티 목록을 불러오는 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티 아이템 추가
+        function addPartyItem(container, partyId, party) {
+            const partyItem = document.createElement('div');
+            partyItem.className = 'party-item';
+            
+            // 24시간제 시간 표시
+            const hours = parseInt(party.time.split(':')[0]) || 20;
+            const minutes = party.time.split(':')[1] || '00';
+            const time24 = `${hours.toString().padStart(2, '0')}:${minutes}`;
+            
+            partyItem.innerHTML = `
+                <div class="party-item-header">
+                    <div>
+                        <strong>${party.dayOfWeek || '월'}요일 ${time24}</strong> - ${party.name || '파티명 없음'}
+                        ${party.desc ? `<small class="text-muted ms-2">${party.desc}</small>` : ''}
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="showPartyMembers('${partyId}')">명단 관리</button>
+                        <button class="btn btn-sm btn-outline-danger ms-2" onclick="deleteParty('${partyId}')">삭제</button>
+                    </div>
+                </div>
+                <div class="party-members" id="members-${partyId}">
+                    <!-- 파티원 미리보기가 여기에 생성됩니다 -->
+                </div>
+                <button class="btn btn-sm btn-link mt-2" onclick="toggleMemberPreview('${partyId}')">더보기</button>
+            `;
+            
+            container.appendChild(partyItem);
+            
+            // 파티원 미리보기 로드
+            loadPartyMembersPreview(partyId, party.members || []);
+        }
+
+        // 파티원 미리보기 토글
+        function toggleMemberPreview(partyId) {
+            const preview = document.getElementById('members-' + partyId);
+            preview.style.display = preview.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // 파티원 미리보기 로드
+        function loadPartyMembersPreview(partyId, members) {
+            const membersPreview = document.getElementById('members-' + partyId);
+            membersPreview.innerHTML = '';
+            
+            if (members.length > 0) {
+                const previewList = document.createElement('ul');
+                members.forEach(member => {
+                    const item = document.createElement('li');
+                    item.textContent = `${member.job || '직업 없음'} - ${member.name || '이름 없음'}`;
+                    if (member.note) {
+                        item.textContent += ` (${member.note})`;
+                    }
+                    previewList.appendChild(item);
+                });
+                membersPreview.appendChild(previewList);
+            } else {
+                membersPreview.innerHTML = '<p>등록된 파티원이 없습니다.</p>';
+            }
+        }
+
+        // 새 파티 추가
+        function addNewParty() {
+            const dayOfWeek = document.getElementById('newDayOfWeek').value;
+            const hour = document.getElementById('newHour').value.padStart(2, '0');
+            const minute = document.getElementById('newMinute').value.padStart(2, '0');
+            const time = `${hour}:${minute}`;
+            const name = document.getElementById('newPartyName').value || '파티명 없음';
+            const desc = document.getElementById('newPartyDesc').value || '';
+            
+            const newPartyRef = database.ref('parties/' + currentBossId).push();
+            newPartyRef.set({
+                dayOfWeek: dayOfWeek,
+                time: time,
+                name: name,
+                desc: desc,
+                members: []
+            }).then(() => {
+                alert('파티가 추가되었습니다!');
+                document.getElementById('newPartyName').value = '';
+                document.getElementById('newPartyDesc').value = '';
+                addPartyModal.hide();
+            }).catch((error) => {
+                console.error("파티 추가 실패:", error);
+                alert('파티 추가 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티 삭제
+        function deleteParty(partyId) {
+            if (confirm('정말 이 파티를 삭제하시겠습니까?')) {
+                database.ref('parties/' + currentBossId + '/' + partyId).remove()
+                    .then(() => alert('파티가 삭제되었습니다.'))
+                    .catch((error) => {
+                        console.error("파티 삭제 실패:", error);
+                        alert('삭제 중 오류가 발생했습니다.');
+                    });
+            }
+        }
+
+        // 파티원 관리 모달 표시
+        function showPartyMembers(partyId) {
+            currentPartyId = partyId;
+            
+            const partyRef = database.ref('parties/' + currentBossId + '/' + partyId);
+            partyRef.once('value').then(snapshot => {
+                const party = snapshot.val();
+                const title = `${party.dayOfWeek || '월'}요일 ${party.time || '20:00'} - ${party.name || '파티명 없음'}`;
+                document.getElementById('memberModalTitle').textContent = title;
+                
+                renderMemberList(party.members || []);
+                memberModal.show();
+            }).catch((error) => {
+                console.error("파티 정보 불러오기 실패:", error);
+                alert('파티 정보를 불러오는 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티원 목록 렌더링
+        function renderMemberList(members) {
+            const memberListElement = document.getElementById('memberList');
+            memberListElement.innerHTML = '';
+            
+            if (members.length === 0) {
+                addMemberRow(memberListElement, 0, { job: '', name: '', note: '' });
+            } else {
+                members.forEach((member, index) => {
+                    addMemberRow(memberListElement, index, member);
+                });
+            }
+        }
+
+        // 파티원 행 추가
+        function addMemberRow(container, index, member) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="form-control member-job" value="${member.job || ''}"></td>
+                <td><input type="text" class="form-control member-name" value="${member.name || ''}"></td>
+                <td><input type="text" class="form-control member-note" value="${member.note || ''}"></td>
+                <td class="text-center"><span class="edit-btn" onclick="this.closest('tr').remove()">❌</span></td>
+            `;
+            container.appendChild(row);
+        }
+
+        // 새 파티원 추가
+        function addNewMember() {
+            const memberListElement = document.getElementById('memberList');
+            addMemberRow(memberListElement, memberListElement.children.length, { job: '', name: '', note: '' });
+        }
+
+        // 파티원 저장
+        function saveMembers() {
+            // 파티원 정보 수집
+            const members = [];
+            document.querySelectorAll('#memberList tr').forEach(row => {
+                const job = row.querySelector('.member-job').value;
+                const name = row.querySelector('.member-name').value;
+                const note = row.querySelector('.member-note').value;
+                
+                if (job || name || note) {
+                    members.push({ job, name, note });
+                }
+            });
+            
+            // Firebase에 저장
+            const partyRef = database.ref('parties/' + currentBossId + '/' + currentPartyId);
+            partyRef.update({
+                members: members
+            }).then(() => {
+                // 미리보기 갱신
+                loadPartyMembersPreview(currentPartyId, members);
+                memberModal.hide();
+                alert('저장되었습니다!');
+            }).catch((error) => {
+                console.error("저장 실패:", error);
+                alert('저장 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 목록으로 돌아가기
+        function backToList() {
+            document.getElementById('bossList').style.display = 'flex';
+            document.getElementById('partyDetail').style.display = 'none';
+        }
+    </script>
+</body>
+</html>    <!-- Firebase & Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        // Firebase 구성 (본인의 설정으로 교체)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJU50BQl3igwD9wuWWoaaO0GwzDvQUv5g",
+            authDomain: "lee0-25f09.firebaseapp.com",
+            databaseURL: "https://lee0-25f09-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "lee0-25f09",
+            storageBucket: "lee0-25f09.firebasestorage.app",
+            messagingSenderId: "766089542573",
+            appId: "1:766089542573:web:98875fe7dd4e64669aff24",
+            measurementId: "G-1VT79LD643"
+        };
+
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // 보스 목록
+        const bossList = [
+            { id: "guard3hard4", name: "군3하4" },
+            { id: "starderkar", name: "스데더카" },
+            { id: "hardwill", name: "하드윌" },
+            { id: "jinhylla", name: "진힐라" },
+            { id: "kalush", name: "카루시" },
+            { id: "kawill", name: "카윌" },
+            { id: "dunkel", name: "듄켈" },
+            { id: "geomma", name: "검마" }
+        ];
+
+        // 전역 변수
+        let currentBossId = null;
+        let currentPartyId = null;
+
+        // 초기화 함수
+        function initApp() {
+            renderBossList();
+            document.getElementById('addPartyBtn').addEventListener('click', () => {
+                new bootstrap.Modal(document.getElementById('addPartyModal')).show();
+            });
+        }
+
+        // 보스 목록 렌더링
+        function renderBossList() {
+            const bossListElement = document.getElementById('bossList');
+            bossListElement.innerHTML = bossList.map(boss => `
+                <div class="col-md-6">
+                    <div class="boss-card" onclick="showPartyDetail('${boss.id}')">
+                        <div class="boss-header">${boss.name}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 파티 상세 정보 보기
+        function showPartyDetail(bossId) {
+            currentBossId = bossId;
+            document.getElementById('bossList').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'block';
+            document.getElementById('partyTitle').textContent = bossList.find(b => b.id === bossId).name;
+            
+            // Firebase에서 파티 목록 로드
+            database.ref('parties/' + bossId).on('value', (snapshot) => {
+                const data = snapshot.val();
+                const container = document.getElementById('partyListContainer');
+                container.innerHTML = data ? 
+                    Object.entries(data).map(([id, party]) => `
+                        <div class="party-item">
+                            <div class="party-item-header">
+                                <strong>${party.dayOfWeek}요일 ${party.time}</strong> - ${party.name}
+                                <button class="btn btn-sm btn-outline-primary" onclick="showPartyMembers('${id}')">명단 관리</button>
+                            </div>
+                            <div class="party-members" id="members-${id}">
+                                ${party.members?.map(m => `${m.job} - ${m.name}`).join('<br>') || '파티원 없음'}
+                            </div>
+                            <button class="btn btn-sm btn-link" onclick="toggleMemberPreview('${id}')">더보기</button>
+                        </div>
+                    `).join('') : '<p>등록된 파티가 없습니다.</p>';
+            });
+        }
+
+        // 목록으로 돌아가기
+        function backToList() {
+            document.getElementById('bossList').style.display = 'flex';
+            document.getElementById('partyDetail').style.display = 'none';
+        }
+
+        // DOM 로드 후 초기화
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
