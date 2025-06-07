@@ -60,21 +60,18 @@
             position: relative;
         }
         
-        .party-count-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: white;
-            color: var(--dark-color);
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
+        .party-count {
+            font-size: 2.5rem;
             font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin: 15px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .party-count-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 10px;
         }
         
         /* 보스별 색상 설정 */
@@ -456,25 +453,14 @@
                     <div class="boss-card ${boss.id}" onclick="showPartyDetail('${boss.id}')">
                         <div class="boss-header">
                             ${boss.name}
-                            <div class="party-count-badge" id="count-${boss.id}">0</div>
                         </div>
                         <div class="card-body text-center py-3">
-                            <i class="bi bi-people-fill" style="font-size: 2rem;"></i>
-                            <p class="mt-2 mb-0">클릭하여 파티 관리</p>
+                            <div class="party-count" id="count-${boss.id}">0</div>
+                            <div class="party-count-label">파티 수</div>
                         </div>
                     </div>
                 `;
                 bossListElement.appendChild(bossCard);
-                
-                // 아이콘 색상 조정
-                const icon = bossCard.querySelector('i');
-                if(['hardwill', 'kawill'].includes(boss.id)) {
-                    icon.style.color = '#d9534f'; 
-                } else if(boss.id === 'geomma') {
-                    icon.style.color = '#555'; 
-                } else {
-                    icon.style.color = 'white'; // 흰색
-                }
                 
                 // 파티 수 실시간 업데이트
                 updatePartyCount(boss.id);
