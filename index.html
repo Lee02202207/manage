@@ -412,7 +412,7 @@
         const bossList = [
             { id: "guard3hard4", name: "군3하4" },
             { id: "starderkar", name: "스데더카" },
-            { id: "hardwill", name: "하드윌" },
+            { id: "hardwill", name: "하드윌칸" },
             { id: "jinhylla", name: "진힐라" },
             { id: "kalush", name: "카루시" },
             { id: "kawill", name: "카윌" },
@@ -469,11 +469,11 @@
                 // 아이콘 색상 조정
                 const icon = bossCard.querySelector('i');
                 if(['hardwill', 'kawill'].includes(boss.id)) {
-                    icon.style.color = '#d9534f'; // 붉은 계열 배경에 어울리는 색
+                    icon.style.color = '#d9534f'; 
                 } else if(boss.id === 'geomma') {
-                    icon.style.color = '#555'; // 회색 계열 배경에 어울리는 색
+                    icon.style.color = '#555'; 
                 } else {
-                    icon.style.color = 'white'; // 기본 흰색
+                    icon.style.color = 'white'; // 흰색
                 }
                 
                 // 파티 수 실시간 업데이트
@@ -576,11 +576,11 @@
             
             container.appendChild(partyItem);
             
-            // 파티원 미리보기 로드
+            // 파티원 미리보기 
             loadPartyMembersPreview(partyId, party.members || []);
         }
 
-        // 파티 수정 모달 열기
+        // 파티 수정 모달
         function editParty(partyId) {
             isEditingParty = true;
             currentPartyId = partyId;
@@ -649,7 +649,7 @@
             });
         }
 
-        // 파티원 미리보기 토글
+        // 미리보기 토글
         function toggleMemberPreview(partyId) {
             const preview = document.getElementById('members-' + partyId);
             const button = preview.nextElementSibling;
@@ -733,7 +733,7 @@
             row.innerHTML = `
                 <td><input type="text" class="form-control member-job" value="${member.job || ''}" placeholder="예) 아델"></td>
                 <td><input type="text" class="form-control member-name" value="${member.name || ''}" placeholder="캐릭터명"></td>
-                <td><input type="text" class="form-control member-note" value="${member.note || ''}" placeholder="7앜2문7칠, 서브바인"></td>
+                <td><input type="text" class="form-control member-note" value="${member.note || ''}" placeholder="7앜2문7칠, 서브바인드"></td>
                 <td class="text-center"><span class="edit-btn" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></span></td>
             `;
             container.appendChild(row);
