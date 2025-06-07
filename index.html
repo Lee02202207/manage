@@ -16,13 +16,13 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 50%, #e4e8f0 50%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
         }
         
         .header {
-            background: linear-gradient(135deg, var(--primary-color) 50%, var(--secondary-color) 50%);
+            background: linear-gradient(to right, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             padding: 25px;
             margin-bottom: 30px;
@@ -30,11 +30,12 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             font-family: 'Press Start 2P', cursive;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: background 1s ease;
         }
         
         .boss-card {
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             margin-bottom: 20px;
             border-radius: 12px;
             overflow: hidden;
@@ -48,14 +49,55 @@
             box-shadow: 0 12px 20px rgba(0,0,0,0.15);
         }
         
+        /* 보스별 그라데이션 색상 (부드러운 전환 적용) */
         .boss-header {
-            background: linear-gradient(135deg, #5f9ea0 0%, #7ab8b8 100%);
             color: white;
             padding: 18px;
             font-weight: 700;
             font-size: 1.1rem;
             text-align: center;
             border-bottom: 3px solid rgba(255,255,255,0.2);
+            transition: background 1s ease;
+        }
+        
+        /* 군3하4 - 청록 계열 (기존 유지) */
+        .guard3hard4 .boss-header {
+            background: linear-gradient(135deg, #7ab8b8 0%, #5f9ea0 100%);
+        }
+        
+        /* 스데더카 - 파스텔 파랑 */
+        .starderkar .boss-header {
+            background: linear-gradient(135deg, #89C4FF 0%, #5481D0 100%);
+        }
+        
+        /* 하드윌 - 붉은빛 도는 하얀 */
+        .hardwill .boss-header {
+            background: linear-gradient(135deg, #FFB8B8 0%, #FF9E9E 100%);
+        }
+        
+        /* 진힐라 - 어두운 녹색 계열 */
+        .jinhylla .boss-header {
+            background: linear-gradient(135deg, #A8D8B9 0%, #6B8F71 100%);
+        }
+        
+        /* 카루시 - 보라 핑크 */
+        .kalush .boss-header {
+            background: linear-gradient(135deg, #D9A3FF 0%, #C77DFF 100%);
+        }
+        
+        /* 카윌 - 하드윌보다 더 붉은 */
+        .kawill .boss-header {
+            background: linear-gradient(135deg, #FFC4C4 0%, #FFA7A7 100%);
+        }
+        
+        /* 듄켈 - 보라빛 도는 회색 */
+        .dunkel .boss-header {
+            background: linear-gradient(135deg, #D3C0D3 0%, #B8A9C8 100%);
+        }
+        
+        /* 검마 - 진한 회색 */
+        .geomma .boss-header {
+            background: linear-gradient(135deg, #B8B8B8 0%, #909090 100%);
         }
         
         .party-container {
@@ -72,6 +114,7 @@
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             font-weight: 500;
+            transition: background 1s ease;
         }
         
         .edit-btn {
@@ -125,6 +168,7 @@
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background 1s ease;
         }
         
         .btn-primary:hover {
@@ -133,13 +177,15 @@
         }
         
         .btn-success {
-            background: linear-gradient(135deg, #2ecc71 50%, #27ae60 50%);
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             border: none;
+            transition: background 1s ease;
         }
         
         .btn-danger {
-            background: linear-gradient(135deg, #e74c3c 50%, #c0392b 50%);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             border: none;
+            transition: background 1s ease;
         }
         
         .modal-content {
@@ -153,6 +199,7 @@
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border-bottom: none;
+            transition: background 1s ease;
         }
         
         .member-badge {
@@ -401,19 +448,29 @@
 
             bossList.forEach(boss => {
                 const bossCard = document.createElement('div');
-                bossCard.className = 'col-md-6 col-lg-4 col-xl-3';
+                bossCard.className = `col-md-6 col-lg-4 col-xl-3`;
                 bossCard.innerHTML = `
-                    <div class="boss-card" onclick="showPartyDetail('${boss.id}')">
+                    <div class="boss-card ${boss.id}" onclick="showPartyDetail('${boss.id}')">
                         <div class="boss-header">
                             ${boss.name}
                         </div>
                         <div class="card-body text-center py-3">
-                            <i class="bi bi-people-fill" style="font-size: 2rem; color: #5f9ea0;"></i>
+                            <i class="bi bi-people-fill" style="font-size: 2rem;"></i>
                             <p class="mt-2 mb-0">클릭하여 파티 관리</p>
                         </div>
                     </div>
                 `;
                 bossListElement.appendChild(bossCard);
+                
+                // 아이콘 색상 조정
+                const icon = bossCard.querySelector('i');
+                if(['hardwill', 'kawill'].includes(boss.id)) {
+                    icon.style.color = '#d9534f'; // 붉은 계열 배경에 어울리는 색
+                } else if(boss.id === 'geomma') {
+                    icon.style.color = '#555'; // 회색 계열 배경에 어울리는 색
+                } else {
+                    icon.style.color = 'white'; // 기본 흰색
+                }
             });
         }
 
