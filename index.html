@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메이플M 명단 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6baf;
+            --secondary-color: #6a8fd8;
+            --accent-color: #ff9f43;
+            --light-color: #f5f7fa;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .boss-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            border: none;
+            background: white;
+        }
+        
+        .boss-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .boss-header {
+            background: linear-gradient(135deg, #5f9ea0 0%, #7ab8b8 100%);
+            color: white;
+            padding: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+        }
+        
+        .party-container {
+            display: none;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .party-table th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .edit-btn {
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: all 0.2s;
+        }
+        
+        .edit-btn:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+        
+        .party-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .party-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .party-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .party-members {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(245, 247, 250, 0.7);
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .time-input {
+            width: 80px;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border: none;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-bottom: none;
+        }
+        
+        .member-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 3px;
+            background: rgba(74, 107, 175, 0.1);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--dark-color);
+            border: 1px solid rgba(74, 107, 175, 0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .party-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .party-time {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        
+        .party-desc {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            width: 100%;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .party-item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-buttons {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="header text-center">
+            <h1>메이플M 명단 관리</h1>
+            <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">파티 구성과 명단 관리를 쉽게!</p>
+        </div>
+
+        <div class="row" id="bossList">
+            <!-- 보스 목록이 동적으로 생성됩니다 -->
+        </div>
+    </div>
+
+    <!-- 보스 파티 상세 정보 컨테이너 -->
+    <div class="container party-container" id="partyDetail">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 id="partyTitle" class="mb-0"></h2>
+            <button class="btn btn-primary" onclick="backToList()">
+                <i class="bi bi-arrow-left"></i> 목록으로
+            </button>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button class="btn btn-success" id="addPartyBtn">
+                <i class="bi bi-plus-circle"></i> 새 파티 추가
+            </button>
+            <div class="text-muted" id="partyCount">0개의 파티</div>
+        </div>
+        
+        <div id="partyListContainer">
+            <!-- 파티 목록이 동적으로 생성됩니다 -->
+        </div>
+    </div>
+
+    <!-- 파티 추가/수정 모달 -->
+    <div class="modal fade" id="partyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPartyTitle">새 파티 추가</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">요일</label>
+                        <select class="form-select" id="editDayOfWeek">
+                            <option value="월">월요일</option>
+                            <option value="화">화요일</option>
+                            <option value="수">수요일</option>
+                            <option value="목">목요일</option>
+                            <option value="금">금요일</option>
+                            <option value="토">토요일</option>
+                            <option value="일">일요일</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">시간 (24시간제)</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" class="form-control time-input" id="editHour" min="0" max="23" value="20"> 
+                            <span class="mx-2">시</span>
+                            <input type="number" class="form-control time-input" id="editMinute" min="0" max="59" value="00">
+                            <span class="ms-2">분</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">파티명</label>
+                        <input type="text" class="form-control" id="editPartyName" placeholder="예) 1파티, 메인파티 등">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">설명 (선택사항)</label>
+                        <input type="text" class="form-control" id="editPartyDesc" placeholder="파티에 대한 간단한 설명">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="savePartyBtn">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 파티원 관리 모달 -->
+    <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="memberModalTitle">파티원 관리</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered party-table">
+                            <thead>
+                                <tr>
+                                    <th width="25%">직업</th>
+                                    <th width="25%">이름</th>
+                                    <th width="40%">비고</th>
+                                    <th width="10%">액션</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberList">
+                                <!-- 파티원 목록이 동적으로 생성됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="addNewMember()">
+                        <i class="bi bi-plus"></i> 파티원 추가
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMembers()">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    
+    <!-- Firebase & Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        // Firebase 구성
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJU50BQl3igwD9wuWWoaaO0GwzDvQUv5g",
+            authDomain: "lee0-25f09.firebaseapp.com",
+            databaseURL: "https://lee0-25f09-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "lee0-25f09",
+            storageBucket: "lee0-25f09.firebasestorage.app",
+            messagingSenderId: "766089542573",
+            appId: "1:766089542573:web:98875fe7dd4e64669aff24",
+            measurementId: "G-1VT79LD643"
+        };
+
+        // Firebase 초기화
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+        
+        // 모달 인스턴스 생성
+        const partyModal = new bootstrap.Modal(document.getElementById('partyModal'));
+        const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
+
+        // 보스 목록
+        const bossList = [
+            { id: "guard3hard4", name: "군3하4" },
+            { id: "starderkar", name: "스데더카" },
+            { id: "hardwill", name: "하드윌" },
+            { id: "jinhylla", name: "진힐라" },
+            { id: "kalush", name: "카루시" },
+            { id: "kawill", name: "카윌" },
+            { id: "dunkel", name: "듄켈" },
+            { id: "geomma", name: "검마" }
+        ];
+
+        // 전역 변수
+        let currentBossId = null;
+        let currentPartyId = null;
+        let isEditingParty = false;
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBossList();
+            
+            // 새 파티 추가 버튼 클릭 이벤트
+            document.getElementById('addPartyBtn').addEventListener('click', function() {
+                isEditingParty = false;
+                currentPartyId = null;
+                document.getElementById('modalPartyTitle').textContent = '새 파티 추가';
+                document.getElementById('editDayOfWeek').value = '월';
+                document.getElementById('editHour').value = '20';
+                document.getElementById('editMinute').value = '00';
+                document.getElementById('editPartyName').value = '';
+                document.getElementById('editPartyDesc').value = '';
+                document.getElementById('savePartyBtn').onclick = saveParty;
+                partyModal.show();
+            });
+        });
+
+        // 보스 목록 렌더링
+        function renderBossList() {
+            const bossListElement = document.getElementById('bossList');
+            bossListElement.innerHTML = '';
+
+            bossList.forEach(boss => {
+                const bossCard = document.createElement('div');
+                bossCard.className = 'col-md-6 col-lg-4 col-xl-3';
+                bossCard.innerHTML = `
+                    <div class="boss-card" onclick="showPartyDetail('${boss.id}')">
+                        <div class="boss-header">
+                            ${boss.name}
+                        </div>
+                        <div class="card-body text-center py-3">
+                            <i class="bi bi-people-fill" style="font-size: 2rem; color: #5f9ea0;"></i>
+                            <p class="mt-2 mb-0">클릭하여 파티 관리</p>
+                        </div>
+                    </div>
+                `;
+                bossListElement.appendChild(bossCard);
+            });
+        }
+
+        // 파티 상세 정보 보기
+        function showPartyDetail(bossId) {
+            currentBossId = bossId;
+            document.getElementById('bossList').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'block';
+            document.getElementById('partyTitle').textContent = bossList.find(b => b.id === bossId).name + ' 파티 관리';
+
+            // Firebase에서 파티 데이터 불러오기
+            loadPartyList(bossId);
+        }
+
+        // 파티 목록 불러오기
+        function loadPartyList(bossId) {
+            const partyListRef = database.ref('parties/' + bossId);
+            
+            partyListRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                const partyListContainer = document.getElementById('partyListContainer');
+                partyListContainer.innerHTML = '';
+                
+                let partyCount = 0;
+                
+                if (data) {
+                    Object.keys(data).forEach(partyId => {
+                        const party = data[partyId];
+                        addPartyItem(partyListContainer, partyId, party);
+                        partyCount++;
+                    });
+                }
+                
+                document.getElementById('partyCount').textContent = `${partyCount}개의 파티`;
+                
+                if (!data || Object.keys(data).length === 0) {
+                    partyListContainer.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="bi bi-people" style="font-size: 3rem; color: #ccc;"></i>
+                            <p class="mt-3 text-muted">등록된 파티가 없습니다.<br>새 파티를 추가해주세요.</p>
+                        </div>
+                    `;
+                }
+            }, (error) => {
+                console.error("데이터 불러오기 실패:", error);
+                alert('파티 목록을 불러오는 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티 아이템 추가
+        function addPartyItem(container, partyId, party) {
+            const partyItem = document.createElement('div');
+            partyItem.className = 'party-item';
+            
+            // 24시간제 시간 표시
+            const hours = parseInt(party.time.split(':')[0]) || 20;
+            const minutes = party.time.split(':')[1] || '00';
+            const time24 = `${hours.toString().padStart(2, '0')}:${minutes}`;
+            
+            partyItem.innerHTML = `
+                <div class="party-item-header">
+                    <div class="party-title">
+                        <span class="party-time">${party.dayOfWeek || '월'}요일 ${time24}</span>
+                        ${party.name || '파티명 없음'}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm btn-outline-primary" onclick="showPartyMembers('${partyId}')">
+                            <i class="bi bi-people"></i> 명단
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="editParty('${partyId}')">
+                            <i class="bi bi-pencil"></i> 수정
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteParty('${partyId}')">
+                            <i class="bi bi-trash"></i> 삭제
+                        </button>
+                    </div>
+                    ${party.desc ? `<div class="party-desc">${party.desc}</div>` : ''}
+                </div>
+                <div class="party-members" id="members-${partyId}">
+                    <!-- 파티원 미리보기가 여기에 생성됩니다 -->
+                </div>
+                <button class="btn btn-sm btn-link mt-2" onclick="toggleMemberPreview('${partyId}')">
+                    <i class="bi bi-chevron-down"></i> 더보기
+                </button>
+            `;
+            
+            container.appendChild(partyItem);
+            
+            // 파티원 미리보기 로드
+            loadPartyMembersPreview(partyId, party.members || []);
+        }
+
+        // 파티 수정 모달 열기
+        function editParty(partyId) {
+            isEditingParty = true;
+            currentPartyId = partyId;
+            
+            const partyRef = database.ref('parties/' + currentBossId + '/' + partyId);
+            partyRef.once('value').then(snapshot => {
+                const party = snapshot.val();
+                
+                document.getElementById('modalPartyTitle').textContent = '파티 수정';
+                document.getElementById('editDayOfWeek').value = party.dayOfWeek || '월';
+                
+                const timeParts = party.time.split(':');
+                document.getElementById('editHour').value = timeParts[0] || '20';
+                document.getElementById('editMinute').value = timeParts[1] || '00';
+                
+                document.getElementById('editPartyName').value = party.name || '';
+                document.getElementById('editPartyDesc').value = party.desc || '';
+                
+                document.getElementById('savePartyBtn').onclick = saveParty;
+                partyModal.show();
+            }).catch((error) => {
+                console.error("파티 정보 불러오기 실패:", error);
+                alert('파티 정보를 불러오는 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티 저장 (추가/수정)
+        function saveParty() {
+            const dayOfWeek = document.getElementById('editDayOfWeek').value;
+            const hour = document.getElementById('editHour').value.padStart(2, '0');
+            const minute = document.getElementById('editMinute').value.padStart(2, '0');
+            const time = `${hour}:${minute}`;
+            const name = document.getElementById('editPartyName').value || '파티명 없음';
+            const desc = document.getElementById('editPartyDesc').value || '';
+            
+            const partyData = {
+                dayOfWeek: dayOfWeek,
+                time: time,
+                name: name,
+                desc: desc
+            };
+            
+            // 기존 멤버 데이터 유지
+            if (isEditingParty && currentPartyId) {
+                partyData.members = []; // 멤버는 별도로 관리
+            } else {
+                partyData.members = [];
+            }
+            
+            let promise;
+            
+            if (isEditingParty && currentPartyId) {
+                // 기존 파티 수정
+                promise = database.ref('parties/' + currentBossId + '/' + currentPartyId).update(partyData);
+            } else {
+                // 새 파티 추가
+                promise = database.ref('parties/' + currentBossId).push().set(partyData);
+            }
+            
+            promise.then(() => {
+                alert('파티가 저장되었습니다!');
+                partyModal.hide();
+            }).catch((error) => {
+                console.error("파티 저장 실패:", error);
+                alert('파티 저장 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티원 미리보기 토글
+        function toggleMemberPreview(partyId) {
+            const preview = document.getElementById('members-' + partyId);
+            const button = preview.nextElementSibling;
+            
+            if (preview.style.display === 'none' || !preview.style.display) {
+                preview.style.display = 'block';
+                button.innerHTML = '<i class="bi bi-chevron-up"></i> 접기';
+            } else {
+                preview.style.display = 'none';
+                button.innerHTML = '<i class="bi bi-chevron-down"></i> 더보기';
+            }
+        }
+
+        // 파티원 미리보기 로드
+        function loadPartyMembersPreview(partyId, members) {
+            const membersPreview = document.getElementById('members-' + partyId);
+            membersPreview.innerHTML = '';
+            
+            if (members.length > 0) {
+                members.forEach(member => {
+                    const badge = document.createElement('span');
+                    badge.className = 'member-badge';
+                    badge.textContent = `${member.job || '직업 없음'} - ${member.name || '이름 없음'}`;
+                    if (member.note) {
+                        badge.textContent += ` (${member.note})`;
+                    }
+                    membersPreview.appendChild(badge);
+                });
+            } else {
+                membersPreview.innerHTML = '<div class="text-center py-2 text-muted">등록된 파티원이 없습니다.</div>';
+            }
+        }
+
+        // 파티 삭제
+        function deleteParty(partyId) {
+            if (confirm('정말 이 파티를 삭제하시겠습니까?\n파티원 정보도 모두 삭제됩니다.')) {
+                database.ref('parties/' + currentBossId + '/' + partyId).remove()
+                    .then(() => alert('파티가 삭제되었습니다.'))
+                    .catch((error) => {
+                        console.error("파티 삭제 실패:", error);
+                        alert('삭제 중 오류가 발생했습니다.');
+                    });
+            }
+        }
+
+        // 파티원 관리 모달 표시
+        function showPartyMembers(partyId) {
+            currentPartyId = partyId;
+            
+            const partyRef = database.ref('parties/' + currentBossId + '/' + partyId);
+            partyRef.once('value').then(snapshot => {
+                const party = snapshot.val();
+                const title = `${party.dayOfWeek || '월'}요일 ${party.time || '20:00'} - ${party.name || '파티명 없음'}`;
+                document.getElementById('memberModalTitle').textContent = title;
+                
+                renderMemberList(party.members || []);
+                memberModal.show();
+            }).catch((error) => {
+                console.error("파티 정보 불러오기 실패:", error);
+                alert('파티 정보를 불러오는 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 파티원 목록 렌더링
+        function renderMemberList(members) {
+            const memberListElement = document.getElementById('memberList');
+            memberListElement.innerHTML = '';
+            
+            if (members.length === 0) {
+                addMemberRow(memberListElement, 0, { job: '', name: '', note: '' });
+            } else {
+                members.forEach((member, index) => {
+                    addMemberRow(memberListElement, index, member);
+                });
+            }
+        }
+
+        // 파티원 행 추가
+        function addMemberRow(container, index, member) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="form-control member-job" value="${member.job || ''}" placeholder="예) 아크메이지"></td>
+                <td><input type="text" class="form-control member-name" value="${member.name || ''}" placeholder="캐릭터명"></td>
+                <td><input type="text" class="form-control member-note" value="${member.note || ''}" placeholder="비고 (선택사항)"></td>
+                <td class="text-center"><span class="edit-btn" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></span></td>
+            `;
+            container.appendChild(row);
+        }
+
+        // 새 파티원 추가
+        function addNewMember() {
+            const memberListElement = document.getElementById('memberList');
+            addMemberRow(memberListElement, memberListElement.children.length, { job: '', name: '', note: '' });
+        }
+
+        // 파티원 저장
+        function saveMembers() {
+            // 파티원 정보 수집
+            const members = [];
+            document.querySelectorAll('#memberList tr').forEach(row => {
+                const job = row.querySelector('.member-job').value.trim();
+                const name = row.querySelector('.member-name').value.trim();
+                const note = row.querySelector('.member-note').value.trim();
+                
+                if (job || name || note) {
+                    members.push({ job, name, note });
+                }
+            });
+            
+            // Firebase에 저장
+            const partyRef = database.ref('parties/' + currentBossId + '/' + currentPartyId);
+            partyRef.update({
+                members: members
+            }).then(() => {
+                // 미리보기 갱신
+                loadPartyMembersPreview(currentPartyId, members);
+                memberModal.hide();
+                alert('파티원 정보가 저장되었습니다!');
+            }).catch((error) => {
+                console.error("저장 실패:", error);
+                alert('저장 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 목록으로 돌아가기
+        function backToList() {
+            document.getElementById('bossList').style.display = 'flex';
+            document.getElementById('partyDetail').style.display = 'none';
+            currentBossId = null;
+        }
+    </script>
+</body>
+</html>
