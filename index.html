@@ -42,6 +42,7 @@
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
             border: none;
             background: white;
+            height: 100%; /* 카드 높이 통일 */
         }
         
         .boss-card:hover {
@@ -51,9 +52,9 @@
         
         .boss-header {
             color: white;
-            padding: 18px;
+            padding: 12px; /* 패딩 줄임 */
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem; /* 폰트 크기 줄임 */
             text-align: center;
             border-bottom: 3px solid rgba(255,255,255,0.2);
             transition: background 1s ease;
@@ -61,46 +62,99 @@
         }
         
         .party-count {
-            font-size: 2.5rem;
+            font-size: 1.8rem; /* 크기 줄임 */
             font-weight: bold;
-            margin: 15px 0;
-            color: gray;
+            margin: 10px 0; /* 마진 줄임 */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .party-count-label {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 10px;
+            font-size: 0.8rem; /* 크기 줄임 */
+            margin-bottom: 8px; /* 마진 줄임 */
+            font-weight: 500;
         }
         
         /* 보스별 색상 설정 */
         .guard3hard4 .boss-header {
             background: linear-gradient(135deg, #7ab8b8 0%, #5f9ea0 100%);
         }
+        .guard3hard4 .party-count {
+            color: #5f9ea0;
+        }
+        .guard3hard4 .party-count-label {
+            color: #5f9ea0;
+        }
+        
         .starderkar .boss-header {
             background: linear-gradient(135deg, #89C4FF 0%, #5481D0 100%);
         }
+        .starderkar .party-count {
+            color: #5481D0;
+        }
+        .starderkar .party-count-label {
+            color: #5481D0;
+        }
+        
         .hardwill .boss-header {
             background: linear-gradient(135deg, #FFB8B8 0%, #FF9E9E 100%);
         }
+        .hardwill .party-count {
+            color: #FF9E9E;
+        }
+        .hardwill .party-count-label {
+            color: #FF9E9E;
+        }
+        
         .jinhylla .boss-header {
             background: linear-gradient(135deg, #A8D8B9 0%, #6B8F71 100%);
         }
+        .jinhylla .party-count {
+            color: #6B8F71;
+        }
+        .jinhylla .party-count-label {
+            color: #6B8F71;
+        }
+        
         .kalush .boss-header {
             background: linear-gradient(135deg, #D9A3FF 0%, #C77DFF 100%);
         }
+        .kalush .party-count {
+            color: #C77DFF;
+        }
+        .kalush .party-count-label {
+            color: #C77DFF;
+        }
+        
         .kawill .boss-header {
             background: linear-gradient(135deg, #FFC4C4 0%, #FFA7A7 100%);
         }
+        .kawill .party-count {
+            color: #FFA7A7;
+        }
+        .kawill .party-count-label {
+            color: #FFA7A7;
+        }
+        
         .dunkel .boss-header {
             background: linear-gradient(135deg, #D3C0D3 0%, #B8A9C8 100%);
         }
+        .dunkel .party-count {
+            color: #B8A9C8;
+        }
+        .dunkel .party-count-label {
+            color: #B8A9C8;
+        }
+        
         .geomma .boss-header {
             background: linear-gradient(135deg, #B8B8B8 0%, #909090 100%);
         }
-        
-        .party-container {
+        .geomma .party-count {
+            color: #909090;
+        }
+        .geomma .party-count-label {
+            color: #909090;
+        }
+         .party-container {
             display: none;
             padding: 25px;
             background: white;
