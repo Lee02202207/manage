@@ -276,11 +276,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">파티명</label>
-                        <input type="text" class="form-control" id="editPartyName" placeholder="예) 1파티, 메인파티 등">
+                        <input type="text" class="form-control" id="editPartyName" placeholder="예) 초은카군1팀 등">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">설명 (선택사항)</label>
-                        <input type="text" class="form-control" id="editPartyDesc" placeholder="파티에 대한 간단한 설명">
+                        <input type="text" class="form-control" id="editPartyDesc" placeholder="예) 5분 전 도착 후 준비 등">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -657,9 +657,9 @@
         function addMemberRow(container, index, member) {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><input type="text" class="form-control member-job" value="${member.job || ''}" placeholder="예) 아크메이지"></td>
+                <td><input type="text" class="form-control member-job" value="${member.job || ''}" placeholder="예) 아델"></td>
                 <td><input type="text" class="form-control member-name" value="${member.name || ''}" placeholder="캐릭터명"></td>
-                <td><input type="text" class="form-control member-note" value="${member.note || ''}" placeholder="비고 (선택사항)"></td>
+                <td><input type="text" class="form-control member-note" value="${member.note || ''}" placeholder="7앜2문7칠, 서브바인"></td>
                 <td class="text-center"><span class="edit-btn" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></span></td>
             `;
             container.appendChild(row);
