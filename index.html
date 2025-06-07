@@ -542,6 +542,195 @@
             loadPartyList(bossId);
         }
 
+         .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        
+        .search-results {
+            display: none;
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-result-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+            background: rgba(245, 247, 250, 0.7);
+            border-radius: 8px;
+        }
+        
+        .search-result-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .search-result-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .highlight {
+            background-color: #FFF9C4;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 기존 HTML은 동일하게 유지 -->
+    
+    <!-- 검색 섹션 추가 -->
+    <div class="container mt-4">
+        <div class="search-section">
+            <h3 class="mb-4">닉네임 검색</h3>
+            <div class="input-group mb-3">
+                <input type="text" id="searchInput" class="form-control" placeholder="찾고 싶은 닉네임을 입력하세요" aria-label="닉네임 검색">
+                <button class="btn btn-primary" type="button" id="searchButton">검색</button>
+            </div>
+            <div class="form-text">참여 중인 모든 파티를 검색합니다. 부분 일치도 검색됩니다.</div>
+        </div>
+        
+        <div class="search-results" id="searchResults">
+            <h4 class="mb-4">검색 결과</h4>
+            <div id="searchResultsContainer"></div>
+        </div>
+        
+        <!-- 기존 헤더와 보스 리스트 -->
+        <div class="header text-center">
+            <h1>메이플M 보스 관리</h1>
+            <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
+        </div>
+
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" id="bossList">
+            <!-- 보스 목록이 동적으로 생성됩니다 -->
+        </div>
+    </div>
+
+    <!-- 기존 party-container 등은 동일하게 유지 -->
+
+    <script>
+        // 기존 JavaScript 코드는 동일하게 유지
+        
+        // 검색 기능 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBossList();
+            
+            // 검색 버튼 클릭 이벤트
+            document.getElementById('searchButton').addEventListener('click', searchNickname);
+            
+            // 엔터 키로도 검색 가능
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchNickname();
+                }
+            });
+            
+            // 기존 이벤트 리스너들...
+        });
+
+        // 닉네임 검색 함수
+        function searchNickname() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (!searchTerm) {
+                alert('검색할 닉네임을 입력해주세요.');
+                return;
+            }
+            
+            const resultsContainer = document.getElementById('searchResultsContainer');
+            resultsContainer.innerHTML = '<div class="text-center py-3"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">검색 중...</p></div>';
+            
+            document.getElementById('searchResults').style.display = 'block';
+            
+            // 모든 파티 검색
+            database.ref('parties').once('value').then(snapshot => {
+                const allParties = snapshot.val();
+                const results = [];
+                
+                // 모든 보스의 파티를 순회하며 검색
+                Object.keys(allParties).forEach(bossId => {
+                    const bossParties = allParties[bossId];
+                    const bossName = bossList.find(b => b.id === bossId)?.name || bossId;
+                    
+                    Object.keys(bossParties).forEach(partyId => {
+                        const party = bossParties[partyId];
+                        const matchingMembers = [];
+                        
+                        // 파티원 중에서 검색어와 일치하는 멤버 찾기
+                        if (party.members && party.members.length > 0) {
+                            party.members.forEach(member => {
+                                if (member.name && member.name.includes(searchTerm)) {
+                                    matchingMembers.push(member);
+                                }
+                            });
+                        }
+                        
+                        // 일치하는 멤버가 있으면 결과에 추가
+                        if (matchingMembers.length > 0) {
+                            results.push({
+                                bossId,
+                                bossName,
+                                partyId,
+                                party,
+                                matchingMembers
+                            });
+                        }
+                    });
+                });
+                
+                // 검색 결과 렌더링
+                renderSearchResults(results, searchTerm);
+            }).catch(error => {
+                console.error("검색 중 오류 발생:", error);
+                resultsContainer.innerHTML = '<div class="alert alert-danger">검색 중 오류가 발생했습니다.</div>';
+            });
+        }
+
+        // 검색 결과 렌더링 함수
+        function renderSearchResults(results, searchTerm) {
+            const resultsContainer = document.getElementById('searchResultsContainer');
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="alert alert-info">검색 결과가 없습니다.</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            results.forEach(result => {
+                const time24 = result.party.time || '20:00';
+                const dayOfWeek = result.party.dayOfWeek || '월';
+                
+                html += `
+                    <div class="search-result-item">
+                        <div class="search-result-title">
+                            ${result.bossName} - ${dayOfWeek}요일 ${time24} (${result.party.name || '파티명 없음'})
+                        </div>
+                        <div class="search-result-members">
+                            ${result.matchingMembers.map(member => `
+                                <span class="member-badge">
+                                    ${member.job ? member.job + ' - ' : ''}
+                                    ${member.name.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`)}
+                                    ${member.note ? '(' + member.note + ')' : ''}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = html;
+        }
+
         // 파티 목록 불러오기
         function loadPartyList(bossId) {
             const partyListRef = database.ref('parties/' + bossId);
