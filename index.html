@@ -787,7 +787,7 @@ function addTimeSlots(timetableBody, hour) {
     timetableBody.appendChild(halfHourRow);
 }
 
-// 파티를 시간표에 추가하는 함수 (수정 버전)
+// 파티를 시간표에 추가하는 함수 (개선된 버전)
 function addPartyToTimetable(boss, party) {
     const dayOfWeek = party.dayOfWeek || '월';
     const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -811,24 +811,28 @@ function addPartyToTimetable(boss, party) {
     
     // 기존에 있는 파티 개수 확인
     const existingParties = cell.querySelectorAll('.timetable-slot').length;
-    const topPosition = 5 + (existingParties * 60); // 각 파티마다 60px 간격
+    const slotHeight = 60; // 각 파티 슬롯의 높이
+    const topPosition = 5 + (existingParties * slotHeight);
     
     const partySlot = document.createElement('div');
     partySlot.className = 'timetable-slot';
     partySlot.style.backgroundColor = getBossColor(boss.id);
     partySlot.style.color = 'white';
     partySlot.style.top = `${topPosition}px`;
-    partySlot.style.height = '55px'; // 고정 높이
+    partySlot.style.height = `${slotHeight - 10}px`; // 패딩 고려
     partySlot.title = `${boss.name} - ${party.name}\n${party.desc || ''}`;
     
     partySlot.innerHTML = `
-        <strong>${boss.name}</strong><br>
-        ${party.name || ''}
+        <div style="padding: 2px; font-size: 0.75rem;">
+            <strong>${boss.name}</strong><br>
+            ${party.name || ''}
+        </div>
     `;
     
     // 셀 높이 자동 조정
-    const requiredHeight = topPosition + 60;
-    if (parseInt(cell.style.minHeight || '0') < requiredHeight) {
+    const requiredHeight = topPosition + slotHeight;
+    const currentHeight = parseInt(cell.style.minHeight || '60');
+    if (currentHeight < requiredHeight) {
         cell.style.minHeight = `${requiredHeight}px`;
         cell.style.position = 'relative'; // 상대 위치 설정
     }
