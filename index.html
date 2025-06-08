@@ -389,11 +389,11 @@
 
 .timetable-slot {
     position: absolute;
-    left: 5px;
-    right: 5px;
-    padding: 5px;
+    left: 2px;
+    right: 2px;
+    padding: 2px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
@@ -402,6 +402,8 @@
     z-index: 1;
     box-sizing: border-box;
     word-break: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .timetable-slot:hover {
@@ -775,18 +777,21 @@ function addTimeSlots(timetableBody, hour) {
         // 정시 셀
         const fullHourDayCell = document.createElement('td');
         fullHourDayCell.id = `timetable-${day}-${hour}-00`;
+        fullHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
+        fullHourDayCell.style.position = 'relative';
         fullHourRow.appendChild(fullHourDayCell);
         
         // 30분 셀
         const halfHourDayCell = document.createElement('td');
         halfHourDayCell.id = `timetable-${day}-${hour}-30`;
+        halfHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
+        halfHourDayCell.style.position = 'relative';
         halfHourRow.appendChild(halfHourDayCell);
     }
     
     timetableBody.appendChild(fullHourRow);
     timetableBody.appendChild(halfHourRow);
 }
-
 // 파티를 시간표에 추가하는 함수 (개선된 버전)
 function addPartyToTimetable(boss, party) {
     const dayOfWeek = party.dayOfWeek || '월';
