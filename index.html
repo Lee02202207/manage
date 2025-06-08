@@ -298,6 +298,41 @@
             gap: 8px;
         }
         
+        /* 닉네임 검색 관련 스타일 추가 */
+        .search-container {
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .search-results {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .search-result-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .search-result-boss {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .highlight {
+            background-color: #fffacd;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        
         @media (max-width: 768px) {
             .party-item-header {
                 flex-direction: column;
@@ -317,6 +352,20 @@
         <div class="header text-center">
             <h1>메이플M 보스 관리</h1>
             <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
+        </div>
+
+        <!-- 닉네임 검색 섹션 추가 -->
+        <div class="search-container">
+            <h4><i class="bi bi-search"></i> 닉네임 검색</h4>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="nicknameSearch" placeholder="찾고 싶은 닉네임을 입력하세요">
+                <button class="btn btn-primary" type="button" id="searchButton">검색</button>
+            </div>
+        </div>
+        
+        <div class="search-results" id="searchResults">
+            <h4><i class="bi bi-people-fill"></i> 검색 결과</h4>
+            <div id="searchResultsContainer"></div>
         </div>
 
         <div class="row" id="bossList">
@@ -492,6 +541,16 @@
                 document.getElementById('editPartyDesc').value = '';
                 document.getElementById('savePartyBtn').onclick = saveParty;
                 partyModal.show();
+            });
+            
+            // 닉네임 검색 버튼 클릭 이벤트
+            document.getElementById('searchButton').addEventListener('click', searchNickname);
+            
+            // 엔터 키로 검색 가능하도록 이벤트 추가
+            document.getElementById('nicknameSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchNickname();
+                }
             });
         });
 
@@ -819,6 +878,164 @@
             document.getElementById('bossList').style.display = 'flex';
             document.getElementById('partyDetail').style.display = 'none';
             currentBossId = null;
+        }
+        
+        // 닉네임 검색 기능
+        function searchNickname() {
+            const nickname = document.getElementById('nicknameSearch').value.trim();
+            
+            if (!nickname) {
+                alert('검색할 닉네임을 입력해주세요.');
+                return;
+            }
+            
+            const searchResultsContainer = document.getElementById('searchResultsContainer');
+            searchResultsContainer.innerHTML = '<div class="text-center py-3"><i class="bi bi-hourglass-split"></i> 검색 중...</div>';
+            
+            document.getElementById('searchResults').style.display = 'block';
+            
+            // 모든 보스의 파티를 검색
+            const promises = bossList.map(boss => {
+                return database.ref('parties/' + boss.id).once('value')
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        const results = [];
+                        
+                        if (data) {
+                            Object.keys(data).forEach(partyId => {
+                                const party = data[partyId];
+                                const matchingMembers = (party.members || []).filter(member => 
+                                    member.name && member.name.includes(nickname)
+                                );
+                                
+                                if (matchingMembers.length > 0) {
+                                    results.push({
+                                        bossName: boss.name,
+                                        partyId: partyId,
+                                        party: party,
+                                        members: matchingMembers
+                                    });
+                                }
+                            });
+                        }
+                        
+                        return results;
+                    });
+            });
+            
+            Promise.all(promises).then(allResults => {
+                const flattenedResults = allResults.flat();
+                
+                if (flattenedResults.length === 0) {
+                    searchResultsContainer.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="bi bi-emoji-frown" style="font-size: 2rem; color: #ccc;"></i>
+                            <p class="mt-3 text-muted">'${nickname}' 닉네임으로 등록된 파티가 없습니다.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                searchResultsContainer.innerHTML = '';
+                
+                flattenedResults.forEach(result => {
+                    const hours = parseInt(result.party.time.split(':')[0]) || 20;
+                    const minutes = result.party.time.split(':')[1] || '00';
+                    const time24 = `${hours.toString().padStart(2, '0')}:${minutes}`;
+                    
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    
+                    let membersHtml = result.members.map(member => {
+                        const highlightedName = member.name.replace(
+                            new RegExp(nickname, 'gi'), 
+                            match => `<span class="highlight">${match}</span>`
+                        );
+                        
+                        return `<div class="member-badge">
+                            ${member.job || '직업 없음'} - ${highlightedName}
+                            ${member.note ? `(${member.note})` : ''}
+                        </div>`;
+                    }).join('');
+                    
+                    resultItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="search-result-boss">${result.bossName}</span>
+                                <span>${result.party.dayOfWeek || '월'}요일 ${time24} - ${result.party.name || '파티명 없음'}</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" 
+                                onclick="showPartyDetailFromSearch('${result.bossName}', '${result.bossName.replace(/\s+/g, '').toLowerCase()}')">
+                                <i class="bi bi-arrow-right"></i> 이동
+                            </button>
+                        </div>
+                        <div class="d-flex flex-wrap">
+                            ${membersHtml}
+                        </div>
+                    `;
+                    
+                    searchResultsContainer.appendChild(resultItem);
+                });
+            }).catch(error => {
+                console.error("검색 실패:", error);
+                searchResultsContainer.innerHTML = `
+                    <div class="text-center py-5 text-danger">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <p class="mt-3">검색 중 오류가 발생했습니다.</p>
+                    </div>
+                `;
+            });
+        }
+        
+        // 검색 결과에서 파티 상세보기로 이동
+        function showPartyDetailFromSearch(bossName, bossId) {
+            currentBossId = bossId;
+            document.getElementById('bossList').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'block';
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('partyTitle').textContent = bossName + ' 파티 관리';
+            
+            // Firebase에서 파티 데이터 불러오기
+            loadPartyList(bossId);
+            
+            // 검색어 유지
+            const nickname = document.getElementById('nicknameSearch').value.trim();
+            if (nickname) {
+                // 파티 목록을 불러온 후 해당 닉네임이 포함된 파티를 하이라이트
+                setTimeout(() => {
+                    highlightPartyWithNickname(nickname);
+                }, 500);
+            }
+        }
+        
+        // 파티 목록에서 특정 닉네임이 포함된 파티 하이라이트
+        function highlightPartyWithNickname(nickname) {
+            const partyItems = document.querySelectorAll('.party-item');
+            
+            partyItems.forEach(item => {
+                const membersPreview = item.querySelector('.party-members');
+                if (membersPreview.textContent.includes(nickname)) {
+                    item.style.borderLeft = '4px solid var(--accent-color)';
+                    item.style.boxShadow = '0 3px 10px rgba(255, 159, 67, 0.2)';
+                    
+                    // 닉네임 하이라이트 처리
+                    const badges = membersPreview.querySelectorAll('.member-badge');
+                    badges.forEach(badge => {
+                        if (badge.textContent.includes(nickname)) {
+                            const html = badge.innerHTML.replace(
+                                new RegExp(nickname, 'gi'), 
+                                match => `<span class="highlight">${match}</span>`
+                            );
+                            badge.innerHTML = html;
+                        }
+                    });
+                    
+                    // 미리보기 열기
+                    membersPreview.style.display = 'block';
+                    const toggleBtn = membersPreview.nextElementSibling;
+                    toggleBtn.innerHTML = '<i class="bi bi-chevron-up"></i> 접기';
+                }
+            });
         }
     </script>
 </body>
