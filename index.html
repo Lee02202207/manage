@@ -727,7 +727,7 @@
             document.getElementById('bossList').style.display = 'flex';
         }
 
-       // 시간표 생성 함수
+    <!-- 시간표 생성 함수 -->
 function generateTimetable() {
     const timetableBody = document.getElementById('timetableBody');
     timetableBody.innerHTML = '';
@@ -770,7 +770,7 @@ function addTimeSlots(timetableBody, hour) {
     const halfHourCell = document.createElement('td');
     halfHourCell.className = 'timetable-hour';
     halfHourCell.textContent = `${hour.toString().padStart(2, '0')}:30`;
-    halfHourRow.appendChild(halfHourCell);
+    halfHourRow.appendChild(fullHourCell);
     
     // 요일별 열 추가 (월~일)
     for (let day = 0; day < 7; day++) {
@@ -792,6 +792,7 @@ function addTimeSlots(timetableBody, hour) {
     timetableBody.appendChild(fullHourRow);
     timetableBody.appendChild(halfHourRow);
 }
+
 // 파티를 시간표에 추가하는 함수 (개선된 버전)
 function addPartyToTimetable(boss, party) {
     const dayOfWeek = party.dayOfWeek || '월';
