@@ -458,7 +458,7 @@
 <body>
     <div class="container mt-4">
         <div class="header text-center">
-    <h1> 1메이플M 보스 명단</h1>
+    <h1> 메이플M 보스 명단</h1>
     <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
     <button class="btn btn-outline-light mt-3" id="timetableBtn">
         <i class="bi bi-calendar-week"></i> 보스 시간표 보기
@@ -727,7 +727,7 @@
             document.getElementById('bossList').style.display = 'flex';
         }
 
-    <!-- 시간표 생성 함수 -->
+       // 시간표 생성 함수
 function generateTimetable() {
     const timetableBody = document.getElementById('timetableBody');
     timetableBody.innerHTML = '';
@@ -770,7 +770,7 @@ function addTimeSlots(timetableBody, hour) {
     const halfHourCell = document.createElement('td');
     halfHourCell.className = 'timetable-hour';
     halfHourCell.textContent = `${hour.toString().padStart(2, '0')}:30`;
-    halfHourRow.appendChild(fullHourCell);
+    halfHourRow.appendChild(halfHourCell);
     
     // 요일별 열 추가 (월~일)
     for (let day = 0; day < 7; day++) {
@@ -792,7 +792,6 @@ function addTimeSlots(timetableBody, hour) {
     timetableBody.appendChild(fullHourRow);
     timetableBody.appendChild(halfHourRow);
 }
-
 // 파티를 시간표에 추가하는 함수 (개선된 버전)
 function addPartyToTimetable(boss, party) {
     const dayOfWeek = party.dayOfWeek || '월';
@@ -1413,4 +1412,4 @@ function addPartyToTimetable(boss, party) {
         }
     </script>
 </body>
-</html>
+</html> 
