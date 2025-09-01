@@ -155,6 +155,16 @@
             color: #909090;
         }
 
+        .seren .boss-header {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+        .seren .party-count {
+            color: #FFA500;
+        }
+        .seren .party-count-label {
+            color: #FFA500;
+        }
+
         .party-container {
             display: none;
             padding: 25px;
@@ -333,19 +343,14 @@
             font-weight: bold;
             padding: 0 2px;
         }
-
-       
-</style>
+    </style>
 </head>
 <body>
     <div class="container mt-4">
         <div class="header text-center">
-    <h1> 메이플M 보스 명단</h1>
-    <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
-    <button class="btn btn-outline-light mt-3" id="timetableBtn">
-        <i class="bi bi-calendar-week"></i> 보스 시간표 보기
-    </button>
-</div>
+            <h1> 메이플M 보스 명단</h1>
+            <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
+        </div>
 
         <!-- 닉네임 검색 섹션 추가 -->
         <div class="search-container">
@@ -501,7 +506,7 @@
         const partyModal = new bootstrap.Modal(document.getElementById('partyModal'));
         const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
 
-        // 보스 목록
+        // 보스 목록 (세렌 추가)
         const bossList = [
             { id: "guard3hard4", name: "군3하4" },
             { id: "starderkar", name: "스데더카" },
@@ -510,7 +515,8 @@
             { id: "kalush", name: "카루시" },
             { id: "kawill", name: "카윌" },
             { id: "dunkel", name: "듄켈" },
-            { id: "geomma", name: "검마" }
+            { id: "geomma", name: "검마" },
+            { id: "seren", name: "세렌" }  // 세렌 추가
         ];
 
         // 전역 변수
@@ -520,9 +526,6 @@
 
         // 페이지 로드 시 실행
         document.addEventListener('DOMContentLoaded', function() {
-            // 시간표 컨테이너 추가
-            addTimetableContainer();
-
             renderBossList();
 
             // 새 파티 추가 버튼 클릭 이벤트
@@ -548,261 +551,7 @@
                     searchNickname();
                 }
             });
-
-            // 시간표 버튼 클릭 이벤트
-            document.getElementById('timetableBtn').addEventListener('click', showTimetable);
         });
-
-        // 시간표 컨테이너 추가 함수
-        function addTimetableContainer() {
-            const timetableHTML = `
-            <div class="timetable-container" id="timetableContainer">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="mb-0"><i class="bi bi-calendar-week"></i> 보스 시간표</h3>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="hideTimetable()">
-                        <i class="bi bi-x"></i> 닫기
-                    </button>
-                </div>
-                <div class="table-responsive">
-                    <table class="timetable">
-                        <thead>
-                            <tr>
-                                <th>시간</th>
-                                <th>월</th>
-                                <th>화</th>
-                                <th>수</th>
-                                <th>목</th>
-                                <th>금</th>
-                                <th>토</th>
-                                <th>일</th>
-                            </tr>
-                        </thead>
-                        <tbody id="timetableBody">
-                            <!-- 시간표 내용이 여기에 생성됩니다 -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            `;
-
-            // header 다음에 시간표 컨테이너 추가
-            document.querySelector('.header').insertAdjacentHTML('afterend', timetableHTML);
-        }
-
-        // 시간표 표시 함수
-        function showTimetable() {
-            document.getElementById('bossList').style.display = 'none';
-            document.getElementById('partyDetail').style.display = 'none';
-            document.getElementById('timetableContainer').style.display = 'block';
-
-            // 시간표 생성
-            generateTimetable();
-
-            // 실시간 시간 표시기 업데이트
-            updateTimeIndicator();
-            setInterval(updateTimeIndicator, 60000); // 1분마다 업데이트
-        }
-
-        // 시간표 숨기기 함수
-        function hideTimetable() {
-            document.getElementById('timetableContainer').style.display = 'none';
-            document.getElementById('bossList').style.display = 'flex';
-        }
-
-       // 시간표 생성 함수
-function generateTimetable() {
-    const timetableBody = document.getElementById('timetableBody');
-    timetableBody.innerHTML = '';
-
-    // 시간대 생성 (18시 ~ 02시, 30분 단위)
-    for (let hour = 18; hour < 24; hour++) {
-        addTimeSlots(timetableBody, hour);
-    }
-    for (let hour = 0; hour < 2; hour++) {
-        addTimeSlots(timetableBody, hour);
-    }
-
-    // 모든 보스 파티 데이터 불러와서 시간표에 표시
-    bossList.forEach(boss => {
-        const bossRef = database.ref('parties/' + boss.id);
-        bossRef.once('value').then(snapshot => {
-            const data = snapshot.val();
-
-            if (data) {
-                Object.keys(data).forEach(partyId => {
-                    const party = data[partyId];
-                    addPartyToTimetable(boss, party);
-                });
-            }
-        });
-    });
-}
-
-// 시간 슬롯 추가 함수 (30분 단위)
-function addTimeSlots(timetableBody, hour) {
-    // 시간 행 추가 (정시)
-    const fullHourRow = document.createElement('tr');
-    const fullHourCell = document.createElement('td');
-    fullHourCell.className = 'timetable-hour';
-    fullHourCell.textContent = `${hour.toString().padStart(2, '0')}:00`;
-    fullHourRow.appendChild(fullHourCell);
-
-    // 시간 행 추가 (30분)
-    const halfHourRow = document.createElement('tr');
-    const halfHourCell = document.createElement('td');
-    halfHourCell.className = 'timetable-hour';
-    halfHourCell.textContent = `${hour.toString().padStart(2, '0')}:30`;
-    halfHourRow.appendChild(halfHourCell);
-
-    // 요일별 열 추가 (월~일)
-    for (let day = 0; day < 7; day++) {
-        // 정시 셀
-        const fullHourDayCell = document.createElement('td');
-        fullHourDayCell.id = `timetable-${day}-${hour}-00`;
-        fullHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
-        fullHourDayCell.style.position = 'relative';
-        fullHourRow.appendChild(fullHourDayCell);
-
-        // 30분 셀
-        const halfHourDayCell = document.createElement('td');
-        halfHourDayCell.id = `timetable-${day}-${hour}-30`;
-        halfHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
-        halfHourDayCell.style.position = 'relative';
-        halfHourRow.appendChild(halfHourDayCell);
-    }
-
-    timetableBody.appendChild(fullHourRow);
-    timetableBody.appendChild(halfHourRow);
-}
-// 파티를 시간표에 추가하는 함수 (개선된 버전)
-function addPartyToTimetable(boss, party) {
-    const dayOfWeek = party.dayOfWeek || '월';
-    const days = ['월', '화', '수', '목', '금', '토', '일'];
-    const dayIndex = days.indexOf(dayOfWeek);
-
-    if (dayIndex === -1) return;
-
-    const timeParts = party.time.split(':');
-    const hour = parseInt(timeParts[0]) || 20;
-    const minute = timeParts[1] || '00';
-
-    // 02:00-18:00 사이는 표시하지 않음
-    if (hour >= 2 && hour < 18) return;
-
-    // 분을 00 또는 30으로 정규화
-    const normalizedMinute = parseInt(minute) < 30 ? '00' : '30';
-    const cellId = `timetable-${dayIndex}-${hour}-${normalizedMinute}`;
-
-    const cell = document.getElementById(cellId);
-    if (!cell) return;
-
-    // 기존에 있는 파티 개수 확인
-    const existingParties = cell.querySelectorAll('.timetable-slot').length;
-    const slotHeight = 60; // 각 파티 슬롯의 높이
-    const topPosition = 5 + (existingParties * slotHeight);
-
-    const partySlot = document.createElement('div');
-    partySlot.className = 'timetable-slot';
-    partySlot.style.backgroundColor = getBossColor(boss.id);
-    partySlot.style.color = 'white';
-    partySlot.style.top = `${topPosition}px`;
-    partySlot.style.height = `${slotHeight - 10}px`; // 패딩 고려
-    partySlot.title = `${boss.name} - ${party.name}\n${party.desc || ''}`;
-
-    partySlot.innerHTML = `
-        <div style="padding: 2px; font-size: 0.75rem;">
-            <strong>${boss.name}</strong><br>
-            ${party.name || ''}
-        </div>
-    `;
-
-    // 셀 높이 자동 조정
-    const requiredHeight = topPosition + slotHeight;
-    const currentHeight = parseInt(cell.style.minHeight || '60');
-    if (currentHeight < requiredHeight) {
-        cell.style.minHeight = `${requiredHeight}px`;
-        cell.style.position = 'relative'; // 상대 위치 설정
-    }
-
-    // 클릭 이벤트: 해당 파티 상세보기로 이동
-    partySlot.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showPartyDetailFromTimetable(boss.id, party.dayOfWeek, party.time);
-    });
-
-    cell.appendChild(partySlot);
-}
-
-        // 보스별 색상 반환 함수
-        function getBossColor(bossId) {
-            const colors = {
-                'guard3hard4': '#5f9ea0',
-                'starderkar': '#5481D0',
-                'hardwill': '#6b8cd7',
-                'jinhylla': '#fe8081',
-                'kalush': '#C77DFF',
-                'kawill': '#ef799f',
-                'dunkel': '#B8A9C8',
-                'geomma': '#909090'
-            };
-            return colors[bossId] || '#4a6baf';
-        }
-
-        // 시간표에서 파티 상세보기로 이동
-        function showPartyDetailFromTimetable(bossId, dayOfWeek, time) {
-            currentBossId = bossId;
-            document.getElementById('timetableContainer').style.display = 'none';
-            document.getElementById('partyDetail').style.display = 'block';
-            document.getElementById('partyTitle').textContent = bossList.find(b => b.id === bossId).name + ' 파티 관리';
-
-            // Firebase에서 파티 데이터 불러오기
-            loadPartyList(bossId);
-
-            // 해당 요일과 시간의 파티 하이라이트
-            setTimeout(() => {
-                highlightPartyInList(dayOfWeek, time);
-            }, 500);
-        }
-
-        // 파티 목록에서 특정 시간대 파티 하이라이트
-        function highlightPartyInList(dayOfWeek, time) {
-            const partyItems = document.querySelectorAll('.party-item');
-
-            partyItems.forEach(item => {
-                const timeElement = item.querySelector('.party-time');
-                if (timeElement && 
-                    timeElement.textContent.includes(dayOfWeek) && 
-                    timeElement.textContent.includes(time)) {
-
-                    item.style.borderLeft = '4px solid var(--accent-color)';
-                    item.style.boxShadow = '0 3px 10px rgba(255, 159, 67, 0.2)';
-
-                    // 스크롤로 이동
-                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            });
-        }
-
-        // 실시간 시간 표시기 업데이트
-        function updateTimeIndicator() {
-            // 기존 표시기 제거
-            document.querySelectorAll('.time-indicator').forEach(el => el.remove());
-
-            const now = new Date();
-            const currentDay = now.getDay() - 1; // 월요일=0, ..., 일요일=6
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-
-            if (currentDay >= 0 && currentDay <= 6) {
-                const cell = document.getElementById(`timetable-${currentDay}-${currentHour}`);
-                if (cell) {
-                    const indicator = document.createElement('div');
-                    indicator.className = 'time-indicator';
-                    indicator.style.top = `${(currentMinute / 60) * 100}%`;
-                    cell.appendChild(indicator);
-                }
-            }
-        }
 
         // 보스 목록 렌더링
         function renderBossList() {
@@ -1138,7 +887,6 @@ function addPartyToTimetable(boss, party) {
         // 닉네임 검색 기능
         function searchNickname() {
             const nickname = document.getElementById('nicknameSearch').value.trim();
-
             if (!nickname) {
                 alert('검색할 닉네임을 입력해주세요.');
                 return;
