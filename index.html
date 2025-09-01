@@ -74,7 +74,7 @@
             font-weight: 500;
         }
 
-        /* 보스별 색상 설정 */
+        /* 보스별 색상 */
         .guard3hard4 .boss-header {
             background: linear-gradient(135deg, #7ab8b8 0%, #5f9ea0 100%);
         }
@@ -344,7 +344,7 @@
             padding: 0 2px;
         }
 
-        /* 요일 필터 스타일 */
+        /* 요일 거맷ㄱㄱ 스타일 */
         .day-filter-container {
             background: white;
             padding: 20px;
@@ -378,7 +378,7 @@
             <p class="mb-0 mt-2" style="font-size: 0.8rem; opacity: 0.9;">자유롭게 변경하세요</p>
         </div>
 
-        <!-- 요일별 필터 섹션 추가 -->
+        <!-- 요일별 검색  추가 -->
         <div class="day-filter-container">
             <h4 class="mb-3"><i class="bi bi-calendar-week"></i> 요일별 보기</h4>
             <div class="d-flex flex-wrap gap-2">
@@ -393,7 +393,7 @@
             </div>
         </div>
 
-        <!-- 닉네임 검색 섹션 추가 -->
+        <!-- 닉네임 검색  추가 -->
         <div class="search-container">
             <h4><i class="bi bi-search"></i> 닉네임 검색</h4>
             <div class="input-group mb-3">
@@ -408,7 +408,7 @@
         </div>
 
         <div class="row" id="bossList">
-            <!-- 보스 목록이 동적으로 생성됩니다 -->
+            <!-- 보스 목록생서이 -->
         </div>
     </div>
 
@@ -429,7 +429,7 @@
         </div>
 
         <div id="partyListContainer">
-            <!-- 파티 목록이 동적으로 생성됩니다 -->
+            <!-- 파티 목록 생성 -->
         </div>
     </div>
 
@@ -480,7 +480,7 @@
         </div>
     </div>
 
-    <!-- 파티원 관리 모달 -->
+    <!-- 파티원 관리md  -->
     <div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -500,7 +500,7 @@
                                 </tr>
                             </thead>
                             <tbody id="memberList">
-                                <!-- 파티원 목록이 동적으로 생성됩니다 -->
+                                <!-- 파티원 목록  -->
                             </tbody>
                         </table>
                     </div>
@@ -537,17 +537,17 @@
             measurementId: "G-1VT79LD643"
         };
 
-        // Firebase 초기화
+        // Firebase rest
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const database = firebase.database();
 
-        // 모달 인스턴스 생성
+        // md inst gene
         const partyModal = new bootstrap.Modal(document.getElementById('partyModal'));
         const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
 
-        // 보스 목록 (세렌 추가)
+        // 보스 목록 
         const bossList = [
             { id: "guard3hard4", name: "군3하4" },
             { id: "starderkar", name: "스데더카" },
@@ -557,7 +557,7 @@
             { id: "kawill", name: "카윌" },
             { id: "dunkel", name: "듄켈" },
             { id: "geomma", name: "검마" },
-            { id: "seren", name: "세렌" }  // 세렌 추가
+            { id: "seren", name: "세렌" }  
         ];
 
         // 전역 변수
