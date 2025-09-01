@@ -14,13 +14,13 @@
             --light-color: #f5f7fa;
             --dark-color: #2c3e50;
         }
-        
+
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             font-family: 'Noto Sans KR', sans-serif;
             min-height: 100vh;
         }
-        
+
         .header {
             background: linear-gradient(to right, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
@@ -32,7 +32,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             transition: background 1s ease;
         }
-        
+
         .boss-card {
             cursor: pointer;
             transition: all 0.5s ease;
@@ -44,12 +44,12 @@
             background: white;
             height: 100%;
         }
-        
+
         .boss-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 20px rgba(0,0,0,0.15);
         }
-        
+
         .boss-header {
             color: white;
             padding: 12px;
@@ -60,20 +60,20 @@
             transition: background 1s ease;
             position: relative;
         }
-        
+
         .party-count {
             font-size: 1.8rem;
             font-weight: bold;
             margin: 10px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .party-count-label {
             font-size: 0.8rem;
             margin-bottom: 8px;
             font-weight: 500;
         }
-        
+
         /* 보스별 색상 설정 */
         .guard3hard4 .boss-header {
             background: linear-gradient(135deg, #7ab8b8 0%, #5f9ea0 100%);
@@ -84,7 +84,7 @@
         .guard3hard4 .party-count-label {
             color: #5f9ea0;
         }
-        
+
         .starderkar .boss-header {
             background: linear-gradient(135deg, #89C4FF 0%, #5481D0 100%);
         }
@@ -94,7 +94,7 @@
         .starderkar .party-count-label {
             color: #5481D0;
         }
-        
+
         .hardwill .boss-header {
             background: linear-gradient(135deg, #6b8cd7 0%, #cad6f0 100%);
         }
@@ -104,7 +104,7 @@
         .hardwill .party-count-label {
             color: #6b8cd7;
         }
-        
+
         .jinhylla .boss-header {
             background: linear-gradient(135deg, #A8D8B9 0%, #6B8F71 100%);
         }
@@ -114,7 +114,7 @@
         .jinhylla .party-count-label {
             color: #fe8081;
         }
-        
+
         .kalush .boss-header {
             background: linear-gradient(135deg, #D9A3FF 0%, #C77DFF 100%);
         }
@@ -124,7 +124,7 @@
         .kalush .party-count-label {
             color: #C77DFF;
         }
-        
+
         .kawill .boss-header {
             background: linear-gradient(135deg, #f6a4c0 0%, #f0799f 100%);
         }
@@ -134,7 +134,7 @@
         .kawill .party-count-label {
             color: #ef799f;
         }
-        
+
         .dunkel .boss-header {
             background: linear-gradient(135deg, #D3C0D3 0%, #B8A9C8 100%);
         }
@@ -144,7 +144,7 @@
         .dunkel .party-count-label {
             color: #B8A9C8;
         }
-        
+
         .geomma .boss-header {
             background: linear-gradient(135deg, #B8B8B8 0%, #909090 100%);
         }
@@ -154,7 +154,7 @@
         .geomma .party-count-label {
             color: #909090;
         }
-        
+
         .party-container {
             display: none;
             padding: 25px;
@@ -164,25 +164,25 @@
             margin-top: 20px;
             animation: fadeIn 0.5s ease;
         }
-        
+
         .party-table th {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             font-weight: 500;
             transition: background 1s ease;
         }
-        
+
         .edit-btn {
             cursor: pointer;
             color: var(--primary-color);
             transition: all 0.2s;
         }
-        
+
         .edit-btn:hover {
             color: var(--accent-color);
             transform: scale(1.1);
         }
-        
+
         .party-item {
             background: white;
             border-radius: 10px;
@@ -192,11 +192,11 @@
             border-left: 4px solid var(--primary-color);
             transition: all 0.3s ease;
         }
-        
+
         .party-item:hover {
             box-shadow: 0 5px 15px rgba(0,0,0,0.12);
         }
-        
+
         .party-item-header {
             display: flex;
             justify-content: space-between;
@@ -204,7 +204,7 @@
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
-        
+
         .party-members {
             display: none;
             margin-top: 15px;
@@ -213,50 +213,50 @@
             border-radius: 8px;
             border: 1px solid rgba(0,0,0,0.05);
         }
-        
+
         .time-input {
             width: 80px;
             display: inline-block;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: background 1s ease;
         }
-        
+
         .btn-primary:hover {
             background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        
+
         .btn-success {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             border: none;
             transition: background 1s ease;
         }
-        
+
         .btn-danger {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             border: none;
             transition: background 1s ease;
         }
-        
+
         .modal-content {
             border-radius: 12px;
             overflow: hidden;
             border: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
-        
+
         .modal-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border-bottom: none;
             transition: background 1s ease;
         }
-        
+
         .member-badge {
             display: inline-block;
             padding: 5px 10px;
@@ -267,12 +267,12 @@
             color: var(--dark-color);
             border: 1px solid rgba(74, 107, 175, 0.2);
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .party-title {
             font-weight: 700;
             color: var(--dark-color);
@@ -280,25 +280,25 @@
             flex: 1;
             min-width: 250px;
         }
-        
+
         .party-time {
             color: var(--primary-color);
             font-weight: 500;
             margin-right: 10px;
         }
-        
+
         .party-desc {
             color: #7f8c8d;
             font-size: 0.9rem;
             margin-top: 5px;
             width: 100%;
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 8px;
         }
-        
+
         /* 닉네임 검색 관련 스타일 추가 */
         .search-container {
             margin-bottom: 20px;
@@ -307,12 +307,12 @@
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
-        
+
         .search-results {
             margin-top: 30px;
             display: none;
         }
-        
+
         .search-result-item {
             background: white;
             border-radius: 8px;
@@ -321,19 +321,20 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border-left: 3px solid var(--primary-color);
         }
-        
+
         .search-result-boss {
             font-weight: bold;
             color: var(--primary-color);
             margin-right: 10px;
         }
-        
+
         .highlight {
             background-color: #fffacd;
             font-weight: bold;
             padding: 0 2px;
         }
 
+       
 </style>
 </head>
 <body>
@@ -354,7 +355,7 @@
                 <button class="btn btn-primary" type="button" id="searchButton">검색</button>
             </div>
         </div>
-        
+
         <div class="search-results" id="searchResults">
             <h4><i class="bi bi-people-fill"></i> 검색 결과</h4>
             <div id="searchResultsContainer"></div>
@@ -373,14 +374,14 @@
                 <i class="bi bi-arrow-left"></i> 목록으로
             </button>
         </div>
-        
+
         <div class="d-flex justify-content-between align-items-center mb-3">
             <button class="btn btn-success" id="addPartyBtn">
                 <i class="bi bi-plus-circle"></i> 새 파티 추가
             </button>
             <div class="text-muted" id="partyCount">0개의 파티</div>
         </div>
-        
+
         <div id="partyListContainer">
             <!-- 파티 목록이 동적으로 생성됩니다 -->
         </div>
@@ -471,12 +472,12 @@
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-    
+
     <!-- Firebase & Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
+
     <script>
         // Firebase 구성
         const firebaseConfig = {
@@ -495,7 +496,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         const database = firebase.database();
-        
+
         // 모달 인스턴스 생성
         const partyModal = new bootstrap.Modal(document.getElementById('partyModal'));
         const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
@@ -519,21 +520,263 @@
 
         // 페이지 로드 시 실행
         document.addEventListener('DOMContentLoaded', function() {
-            
+            // 시간표 컨테이너 추가
+            addTimetableContainer();
+
+            renderBossList();
+
+            // 새 파티 추가 버튼 클릭 이벤트
+            document.getElementById('addPartyBtn').addEventListener('click', function() {
+                isEditingParty = false;
+                currentPartyId = null;
+                document.getElementById('modalPartyTitle').textContent = '새 파티 추가';
+                document.getElementById('editDayOfWeek').value = '월';
+                document.getElementById('editHour').value = '20';
+                document.getElementById('editMinute').value = '00';
+                document.getElementById('editPartyName').value = '';
+                document.getElementById('editPartyDesc').value = '';
+                document.getElementById('savePartyBtn').onclick = saveParty;
+                partyModal.show();
+            });
+
+            // 닉네임 검색 버튼 클릭 이벤트
+            document.getElementById('searchButton').addEventListener('click', searchNickname);
+
+            // 엔터 키로 검색 가능하도록 이벤트 추가
+            document.getElementById('nicknameSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchNickname();
+                }
+            });
+
+            // 시간표 버튼 클릭 이벤트
+            document.getElementById('timetableBtn').addEventListener('click', showTimetable);
+        });
+
+        // 시간표 컨테이너 추가 함수
+        function addTimetableContainer() {
+            const timetableHTML = `
+            <div class="timetable-container" id="timetableContainer">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="mb-0"><i class="bi bi-calendar-week"></i> 보스 시간표</h3>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="hideTimetable()">
+                        <i class="bi bi-x"></i> 닫기
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="timetable">
+                        <thead>
+                            <tr>
+                                <th>시간</th>
+                                <th>월</th>
+                                <th>화</th>
+                                <th>수</th>
+                                <th>목</th>
+                                <th>금</th>
+                                <th>토</th>
+                                <th>일</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetableBody">
+                            <!-- 시간표 내용이 여기에 생성됩니다 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            `;
+
+            // header 다음에 시간표 컨테이너 추가
+            document.querySelector('.header').insertAdjacentHTML('afterend', timetableHTML);
+        }
+
+        // 시간표 표시 함수
+        function showTimetable() {
+            document.getElementById('bossList').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'none';
+            document.getElementById('timetableContainer').style.display = 'block';
+
+            // 시간표 생성
+            generateTimetable();
+
+            // 실시간 시간 표시기 업데이트
+            updateTimeIndicator();
+            setInterval(updateTimeIndicator, 60000); // 1분마다 업데이트
+        }
+
+        // 시간표 숨기기 함수
+        function hideTimetable() {
+            document.getElementById('timetableContainer').style.display = 'none';
+            document.getElementById('bossList').style.display = 'flex';
+        }
+
+       // 시간표 생성 함수
+function generateTimetable() {
+    const timetableBody = document.getElementById('timetableBody');
+    timetableBody.innerHTML = '';
+
+    // 시간대 생성 (18시 ~ 02시, 30분 단위)
+    for (let hour = 18; hour < 24; hour++) {
+        addTimeSlots(timetableBody, hour);
+    }
+    for (let hour = 0; hour < 2; hour++) {
+        addTimeSlots(timetableBody, hour);
+    }
+
+    // 모든 보스 파티 데이터 불러와서 시간표에 표시
+    bossList.forEach(boss => {
+        const bossRef = database.ref('parties/' + boss.id);
+        bossRef.once('value').then(snapshot => {
+            const data = snapshot.val();
+
+            if (data) {
+                Object.keys(data).forEach(partyId => {
+                    const party = data[partyId];
+                    addPartyToTimetable(boss, party);
+                });
+            }
+        });
+    });
+}
+
+// 시간 슬롯 추가 함수 (30분 단위)
+function addTimeSlots(timetableBody, hour) {
+    // 시간 행 추가 (정시)
+    const fullHourRow = document.createElement('tr');
+    const fullHourCell = document.createElement('td');
+    fullHourCell.className = 'timetable-hour';
+    fullHourCell.textContent = `${hour.toString().padStart(2, '0')}:00`;
+    fullHourRow.appendChild(fullHourCell);
+
+    // 시간 행 추가 (30분)
+    const halfHourRow = document.createElement('tr');
+    const halfHourCell = document.createElement('td');
+    halfHourCell.className = 'timetable-hour';
+    halfHourCell.textContent = `${hour.toString().padStart(2, '0')}:30`;
+    halfHourRow.appendChild(halfHourCell);
+
+    // 요일별 열 추가 (월~일)
+    for (let day = 0; day < 7; day++) {
+        // 정시 셀
+        const fullHourDayCell = document.createElement('td');
+        fullHourDayCell.id = `timetable-${day}-${hour}-00`;
+        fullHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
+        fullHourDayCell.style.position = 'relative';
+        fullHourRow.appendChild(fullHourDayCell);
+
+        // 30분 셀
+        const halfHourDayCell = document.createElement('td');
+        halfHourDayCell.id = `timetable-${day}-${hour}-30`;
+        halfHourDayCell.style.minHeight = '60px'; // 기본 높이 설정
+        halfHourDayCell.style.position = 'relative';
+        halfHourRow.appendChild(halfHourDayCell);
+    }
+
+    timetableBody.appendChild(fullHourRow);
+    timetableBody.appendChild(halfHourRow);
+}
+// 파티를 시간표에 추가하는 함수 (개선된 버전)
+function addPartyToTimetable(boss, party) {
+    const dayOfWeek = party.dayOfWeek || '월';
+    const days = ['월', '화', '수', '목', '금', '토', '일'];
+    const dayIndex = days.indexOf(dayOfWeek);
+
+    if (dayIndex === -1) return;
+
+    const timeParts = party.time.split(':');
+    const hour = parseInt(timeParts[0]) || 20;
+    const minute = timeParts[1] || '00';
+
+    // 02:00-18:00 사이는 표시하지 않음
+    if (hour >= 2 && hour < 18) return;
+
+    // 분을 00 또는 30으로 정규화
+    const normalizedMinute = parseInt(minute) < 30 ? '00' : '30';
+    const cellId = `timetable-${dayIndex}-${hour}-${normalizedMinute}`;
+
+    const cell = document.getElementById(cellId);
+    if (!cell) return;
+
+    // 기존에 있는 파티 개수 확인
+    const existingParties = cell.querySelectorAll('.timetable-slot').length;
+    const slotHeight = 60; // 각 파티 슬롯의 높이
+    const topPosition = 5 + (existingParties * slotHeight);
+
+    const partySlot = document.createElement('div');
+    partySlot.className = 'timetable-slot';
+    partySlot.style.backgroundColor = getBossColor(boss.id);
+    partySlot.style.color = 'white';
+    partySlot.style.top = `${topPosition}px`;
+    partySlot.style.height = `${slotHeight - 10}px`; // 패딩 고려
+    partySlot.title = `${boss.name} - ${party.name}\n${party.desc || ''}`;
+
+    partySlot.innerHTML = `
+        <div style="padding: 2px; font-size: 0.75rem;">
+            <strong>${boss.name}</strong><br>
+            ${party.name || ''}
+        </div>
+    `;
+
+    // 셀 높이 자동 조정
+    const requiredHeight = topPosition + slotHeight;
+    const currentHeight = parseInt(cell.style.minHeight || '60');
+    if (currentHeight < requiredHeight) {
+        cell.style.minHeight = `${requiredHeight}px`;
+        cell.style.position = 'relative'; // 상대 위치 설정
+    }
+
+    // 클릭 이벤트: 해당 파티 상세보기로 이동
+    partySlot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPartyDetailFromTimetable(boss.id, party.dayOfWeek, party.time);
+    });
+
+    cell.appendChild(partySlot);
+}
+
+        // 보스별 색상 반환 함수
+        function getBossColor(bossId) {
+            const colors = {
+                'guard3hard4': '#5f9ea0',
+                'starderkar': '#5481D0',
+                'hardwill': '#6b8cd7',
+                'jinhylla': '#fe8081',
+                'kalush': '#C77DFF',
+                'kawill': '#ef799f',
+                'dunkel': '#B8A9C8',
+                'geomma': '#909090'
+            };
+            return colors[bossId] || '#4a6baf';
+        }
+
+        // 시간표에서 파티 상세보기로 이동
+        function showPartyDetailFromTimetable(bossId, dayOfWeek, time) {
+            currentBossId = bossId;
+            document.getElementById('timetableContainer').style.display = 'none';
+            document.getElementById('partyDetail').style.display = 'block';
+            document.getElementById('partyTitle').textContent = bossList.find(b => b.id === bossId).name + ' 파티 관리';
+
+            // Firebase에서 파티 데이터 불러오기
+            loadPartyList(bossId);
+
+            // 해당 요일과 시간의 파티 하이라이트
+            setTimeout(() => {
+                highlightPartyInList(dayOfWeek, time);
+            }, 500);
+        }
 
         // 파티 목록에서 특정 시간대 파티 하이라이트
         function highlightPartyInList(dayOfWeek, time) {
             const partyItems = document.querySelectorAll('.party-item');
-            
+
             partyItems.forEach(item => {
                 const timeElement = item.querySelector('.party-time');
                 if (timeElement && 
                     timeElement.textContent.includes(dayOfWeek) && 
                     timeElement.textContent.includes(time)) {
-                    
+
                     item.style.borderLeft = '4px solid var(--accent-color)';
                     item.style.boxShadow = '0 3px 10px rgba(255, 159, 67, 0.2)';
-                    
+
                     // 스크롤로 이동
                     item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -544,12 +787,12 @@
         function updateTimeIndicator() {
             // 기존 표시기 제거
             document.querySelectorAll('.time-indicator').forEach(el => el.remove());
-            
+
             const now = new Date();
             const currentDay = now.getDay() - 1; // 월요일=0, ..., 일요일=6
             const currentHour = now.getHours();
             const currentMinute = now.getMinutes();
-            
+
             if (currentDay >= 0 && currentDay <= 6) {
                 const cell = document.getElementById(`timetable-${currentDay}-${currentHour}`);
                 if (cell) {
@@ -581,7 +824,7 @@
                     </div>
                 `;
                 bossListElement.appendChild(bossCard);
-                
+
                 // 파티 수 실시간 업데이트
                 updatePartyCount(boss.id);
             });
@@ -611,14 +854,14 @@
         // 파티 목록 불러오기
         function loadPartyList(bossId) {
             const partyListRef = database.ref('parties/' + bossId);
-            
+
             partyListRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const partyListContainer = document.getElementById('partyListContainer');
                 partyListContainer.innerHTML = '';
-                
+
                 let partyCount = 0;
-                
+
                 if (data) {
                     Object.keys(data).forEach(partyId => {
                         const party = data[partyId];
@@ -626,9 +869,9 @@
                         partyCount++;
                     });
                 }
-                
+
                 document.getElementById('partyCount').textContent = `${partyCount}개의 파티`;
-                
+
                 if (!data || Object.keys(data).length === 0) {
                     partyListContainer.innerHTML = `
                         <div class="text-center py-5">
@@ -647,12 +890,12 @@
         function addPartyItem(container, partyId, party) {
             const partyItem = document.createElement('div');
             partyItem.className = 'party-item';
-            
+
             // 24시간제 시간 표시
             const hours = parseInt(party.time.split(':')[0]) || 20;
             const minutes = party.time.split(':')[1] || '00';
             const time24 = `${hours.toString().padStart(2, '0')}:${minutes}`;
-            
+
             partyItem.innerHTML = `
                 <div class="party-item-header">
                     <div class="party-title">
@@ -679,9 +922,9 @@
                     <i class="bi bi-chevron-down"></i> 더보기
                 </button>
             `;
-            
+
             container.appendChild(partyItem);
-            
+
             // 파티원 미리보기 
             loadPartyMembersPreview(partyId, party.members || []);
         }
@@ -690,21 +933,21 @@
         function editParty(partyId) {
             isEditingParty = true;
             currentPartyId = partyId;
-            
+
             const partyRef = database.ref('parties/' + currentBossId + '/' + partyId);
             partyRef.once('value').then(snapshot => {
                 const party = snapshot.val();
-                
+
                 document.getElementById('modalPartyTitle').textContent = '파티 수정';
                 document.getElementById('editDayOfWeek').value = party.dayOfWeek || '월';
-                
+
                 const timeParts = party.time.split(':');
                 document.getElementById('editHour').value = timeParts[0] || '20';
                 document.getElementById('editMinute').value = timeParts[1] || '00';
-                
+
                 document.getElementById('editPartyName').value = party.name || '';
                 document.getElementById('editPartyDesc').value = party.desc || '';
-                
+
                 document.getElementById('savePartyBtn').onclick = saveParty;
                 partyModal.show();
             }).catch((error) => {
@@ -721,14 +964,14 @@
             const time = `${hour}:${minute}`;
             const name = document.getElementById('editPartyName').value || '파티명 없음';
             const desc = document.getElementById('editPartyDesc').value || '';
-            
+
             const partyData = {
                 dayOfWeek: dayOfWeek,
                 time: time,
                 name: name,
                 desc: desc
             };
-            
+
             if (isEditingParty && currentPartyId) {
                 // 기존 파티 수정 시 members 데이터 유지
                 const partyRef = database.ref('parties/' + currentBossId + '/' + currentPartyId);
@@ -737,7 +980,7 @@
                     if (existingParty.members) {
                         partyData.members = existingParty.members;
                     }
-                    
+
                     return partyRef.update(partyData);
                 }).then(() => {
                     alert('파티가 저장되었습니다!');
@@ -764,7 +1007,7 @@
         function toggleMemberPreview(partyId) {
             const preview = document.getElementById('members-' + partyId);
             const button = preview.nextElementSibling;
-            
+
             if (preview.style.display === 'none' || !preview.style.display) {
                 preview.style.display = 'block';
                 button.innerHTML = '<i class="bi bi-chevron-up"></i> 접기';
@@ -778,7 +1021,7 @@
         function loadPartyMembersPreview(partyId, members) {
             const membersPreview = document.getElementById('members-' + partyId);
             membersPreview.innerHTML = '';
-            
+
             if (members.length > 0) {
                 members.forEach(member => {
                     const badge = document.createElement('span');
@@ -809,13 +1052,13 @@
         // 파티원 관리 모달 표시
         function showPartyMembers(partyId) {
             currentPartyId = partyId;
-            
+
             const partyRef = database.ref('parties/' + currentBossId + '/' + partyId);
             partyRef.once('value').then(snapshot => {
                 const party = snapshot.val();
                 const title = `${party.dayOfWeek || '월'}요일 ${party.time || '20:00'} - ${party.name || '파티명 없음'}`;
                 document.getElementById('memberModalTitle').textContent = title;
-                
+
                 renderMemberList(party.members || []);
                 memberModal.show();
             }).catch((error) => {
@@ -828,7 +1071,7 @@
         function renderMemberList(members) {
             const memberListElement = document.getElementById('memberList');
             memberListElement.innerHTML = '';
-            
+
             if (members.length === 0) {
                 addMemberRow(memberListElement, 0, { job: '', name: '', note: '' });
             } else {
@@ -864,12 +1107,12 @@
                 const job = row.querySelector('.member-job').value.trim();
                 const name = row.querySelector('.member-name').value.trim();
                 const note = row.querySelector('.member-note').value.trim();
-                
+
                 if (job || name || note) {
                     members.push({ job, name, note });
                 }
             });
-            
+
             // Firebase에 저장
             const partyRef = database.ref('parties/' + currentBossId + '/' + currentPartyId);
             partyRef.update({
@@ -891,35 +1134,35 @@
             document.getElementById('partyDetail').style.display = 'none';
             currentBossId = null;
         }
-        
+
         // 닉네임 검색 기능
         function searchNickname() {
             const nickname = document.getElementById('nicknameSearch').value.trim();
-            
+
             if (!nickname) {
                 alert('검색할 닉네임을 입력해주세요.');
                 return;
             }
-            
+
             const searchResultsContainer = document.getElementById('searchResultsContainer');
             searchResultsContainer.innerHTML = '<div class="text-center py-3"><i class="bi bi-hourglass-split"></i> 검색 중...</div>';
-            
+
             document.getElementById('searchResults').style.display = 'block';
-            
+
             // 모든 보스의 파티를 검색
             const promises = bossList.map(boss => {
                 return database.ref('parties/' + boss.id).once('value')
                     .then(snapshot => {
                         const data = snapshot.val();
                         const results = [];
-                        
+
                         if (data) {
                             Object.keys(data).forEach(partyId => {
                                 const party = data[partyId];
                                 const matchingMembers = (party.members || []).filter(member => 
                                     member.name && member.name.includes(nickname)
                                 );
-                                
+
                                 if (matchingMembers.length > 0) {
                                     results.push({
                                         bossName: boss.name,
@@ -930,14 +1173,14 @@
                                 }
                             });
                         }
-                        
+
                         return results;
                     });
             });
-            
+
             Promise.all(promises).then(allResults => {
                 const flattenedResults = allResults.flat();
-                
+
                 if (flattenedResults.length === 0) {
                     searchResultsContainer.innerHTML = `
                         <div class="text-center py-5">
@@ -947,29 +1190,29 @@
                     `;
                     return;
                 }
-                
+
                 searchResultsContainer.innerHTML = '';
-                
+
                 flattenedResults.forEach(result => {
                     const hours = parseInt(result.party.time.split(':')[0]) || 20;
                     const minutes = result.party.time.split(':')[1] || '00';
                     const time24 = `${hours.toString().padStart(2, '0')}:${minutes}`;
-                    
+
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
-                    
+
                     let membersHtml = result.members.map(member => {
                         const highlightedName = member.name.replace(
                             new RegExp(nickname, 'gi'), 
                             match => `<span class="highlight">${match}</span>`
                         );
-                        
+
                         return `<div class="member-badge">
                             ${member.job || '직업 없음'} - ${highlightedName}
                             ${member.note ? `(${member.note})` : ''}
                         </div>`;
                     }).join('');
-                    
+
                     resultItem.innerHTML = `
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
@@ -985,7 +1228,7 @@
                             ${membersHtml}
                         </div>
                     `;
-                    
+
                     searchResultsContainer.appendChild(resultItem);
                 });
             }).catch(error => {
@@ -998,7 +1241,7 @@
                 `;
             });
         }
-        
+
         // 검색 결과에서 파티 상세보기로 이동
         function showPartyDetailFromSearch(bossName, bossId) {
             currentBossId = bossId;
@@ -1006,10 +1249,10 @@
             document.getElementById('partyDetail').style.display = 'block';
             document.getElementById('searchResults').style.display = 'none';
             document.getElementById('partyTitle').textContent = bossName + ' 파티 관리';
-            
+
             // Firebase에서 파티 데이터 불러오기
             loadPartyList(bossId);
-            
+
             // 검색어 유지
             const nickname = document.getElementById('nicknameSearch').value.trim();
             if (nickname) {
@@ -1019,17 +1262,17 @@
                 }, 500);
             }
         }
-        
+
         // 파티 목록에서 특정 닉네임이 포함된 파티 하이라이트
         function highlightPartyWithNickname(nickname) {
             const partyItems = document.querySelectorAll('.party-item');
-            
+
             partyItems.forEach(item => {
                 const membersPreview = item.querySelector('.party-members');
                 if (membersPreview.textContent.includes(nickname)) {
                     item.style.borderLeft = '4px solid var(--accent-color)';
                     item.style.boxShadow = '0 3px 10px rgba(255, 159, 67, 0.2)';
-                    
+
                     // 닉네임 하이라이트 처리
                     const badges = membersPreview.querySelectorAll('.member-badge');
                     badges.forEach(badge => {
@@ -1041,7 +1284,7 @@
                             badge.innerHTML = html;
                         }
                     });
-                    
+
                     // 미리보기 열기
                     membersPreview.style.display = 'block';
                     const toggleBtn = membersPreview.nextElementSibling;
